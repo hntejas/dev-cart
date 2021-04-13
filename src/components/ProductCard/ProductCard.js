@@ -61,7 +61,7 @@ export default function ProductCard({ product }) {
   };
 
   const buttonText = !!isProductInCart
-    ? "Already In Cart"
+    ? "In Cart"
     : availability === "IN_STOCK"
     ? "Add to cart"
     : "Out of Stock";

@@ -12,7 +12,8 @@
 }
 
 .btn:hover:not([disabled]) {
-  background: #da8702;
+  border-color: #ff9f00;
+  background: #ff9f00;
   color: white;
 }
 

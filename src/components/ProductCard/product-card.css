@@ -97,8 +97,8 @@
   }
   .card-container {
     min-width: unset;
-    width: 45%;
-    margin: 0.3rem 0;
+    width: calc(50% - 10px);
+    margin: 0.1rem 0;
     border-right: 1px solid lightgrey;
     padding: 0.2rem;
   }
