@@ -1,0 +1,23 @@
+.btn {
+  padding: 0.6rem 1rem;
+  background: none;
+  cursor: pointer;
+  width: max-content;
+  margin: auto;
+  color: #ff9f00;
+  border: 1.5px solid #ff9f00;
+  font-weight: 600;
+  text-transform: uppercase;
+  border-radius: 0.3rem;
+}
+
+.btn:hover:not([disabled]) {
+  background: #da8702;
+  color: white;
+}
+
+.btn:disabled {
+  border: none;
+  background: lightgrey;
+  color: white;
+}

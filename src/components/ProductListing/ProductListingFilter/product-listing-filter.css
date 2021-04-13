@@ -1,0 +1,30 @@
+.filter-container {
+  min-width: 280px;
+  background: white;
+  margin: 0.5rem;
+  margin-top: 1rem;
+  padding: 0.5rem;
+  height: max-content;
+}
+
+.filter-list {
+  padding-inline-start: 0;
+  padding: 0 1.5rem;
+}
+
+.filter-list h4 {
+  margin: 1rem 0.5rem 0.5rem 0.5rem;
+}
+
+.filter-list li {
+  list-style: none;
+  text-align: left;
+  padding-bottom: 0.5rem;
+}
+
+.filter-heading {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  align-items: center;
+}

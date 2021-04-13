@@ -1,0 +1,131 @@
+.card-container {
+  width: 200px;
+  padding: 0.6rem;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  background: white;
+  margin: 1rem 0.5rem;
+}
+
+.card-container:hover {
+  box-shadow: 0 3px 16px 0 rgb(0 0 0 / 11%);
+}
+
+.card-img-container {
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.card-img {
+  width: 100%;
+  height: max-content;
+  max-height: 100%;
+}
+
+.card-details-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.card-product-brand {
+  margin: 0.1rem 0;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: gray;
+}
+
+.card-product-title {
+  margin: 0.3rem 0;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.card-pricing-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  margin-top: 0.3rem;
+}
+
+.card-pricing-container > span {
+  margin-right: 0.35rem;
+}
+
+.card-product-price {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.card-product-base-price {
+  font-size: 0.8rem;
+  font-weight: 550;
+  color: gray;
+  text-decoration: line-through;
+}
+
+.card-product-discount {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: green;
+}
+
+.btn-wishlist-container {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  padding: 0.3rem;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.2rem;
+}
+
+.btn-wishlist-container:hover {
+  background: lightgrey;
+}
+
+@media (max-width: 550px) {
+  .product-list {
+    justify-content: space-evenly;
+  }
+  .card-container {
+    min-width: unset;
+    width: 45%;
+    margin: 0.3rem 0;
+    border-right: 1px solid lightgrey;
+    padding: 0.2rem;
+  }
+
+  .card-img-container {
+    height: 170px;
+  }
+  .card-container .btn {
+    font-size: 0.8rem;
+    padding: 0.5rem 0.5rem;
+  }
+}
+
+@media (max-width: 350px) {
+  .card-product-brand {
+    font-size: 0.7rem;
+  }
+  .card-product-title {
+    font-size: 0.8rem;
+  }
+  .card-product-price {
+    font-size: 0.85rem;
+  }
+  .card-product-base-price {
+    font-size: 0.7rem;
+  }
+  .card-product-discount {
+    font-size: 0.7rem;
+  }
+}

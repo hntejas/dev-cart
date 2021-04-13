@@ -1,0 +1,22 @@
+.cart-summary-container {
+  min-width: 18rem;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  width: max-content;
+  box-shadow: 0 1px 1px 0 rgb(0 0 0 / 20%);
+  background: white;
+  padding: 0.3rem;
+  margin: auto;
+}
+
+.cart-summary-item {
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem;
+  font-size: 0.9rem;
+}
+
+.text-green {
+  color: green;
+}
