@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import ProductListingFilter from "./ProductListingFilter/ProductListingFilter";
 import ProductList from "./ProductList/ProductList";
 
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { ProductFiltersContext } from "../../store/product-filter/productFilterContext";
 
 import "./product-listing.css";

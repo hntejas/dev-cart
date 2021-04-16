@@ -5,6 +5,7 @@
   margin-top: 1rem;
   padding: 0.5rem;
   height: max-content;
+  border-right: 1px solid lightgrey;
 }
 
 .filter-list {

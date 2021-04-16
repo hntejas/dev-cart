@@ -121,12 +121,62 @@ export const products = [
   },
 ];
 
-export const brands = ["Brand 1", "Brand 2", "Brand 3", "Brand 4"];
+export const brands = [
+  {
+    id: 1,
+    name: "Brand 1",
+    imgUrl:
+      "https://rukminim1.flixcart.com/image/580/696/kg2l47k0-0/sandal/g/t/f/205089-0a3-crocs-charcoal-volt-green-original-imafwe5hb8gmhfxu.jpeg?q=50",
+  },
+  {
+    id: 2,
+    name: "Brand 2",
+    imgUrl:
+      "https://rukminim1.flixcart.com/image/580/696/kg2l47k0-0/sandal/g/t/f/205089-0a3-crocs-charcoal-volt-green-original-imafwe5hb8gmhfxu.jpeg?q=50",
+  },
+  {
+    id: 3,
+    name: "Brand 3",
+    imgUrl:
+      "https://rukminim1.flixcart.com/image/580/696/kg2l47k0-0/sandal/g/t/f/205089-0a3-crocs-charcoal-volt-green-original-imafwe5hb8gmhfxu.jpeg?q=50",
+  },
+  {
+    id: 4,
+    name: "Brand 4",
+    imgUrl:
+      "https://rukminim1.flixcart.com/image/580/696/kg2l47k0-0/sandal/g/t/f/205089-0a3-crocs-charcoal-volt-green-original-imafwe5hb8gmhfxu.jpeg?q=50",
+  },
+];
 
 export const categories = [
-  "Furniture",
-  "Laptops",
-  "Monitors",
-  "Storage",
-  "Headphones",
+  {
+    id: 1,
+    name: "Furniture",
+    imgUrl:
+      "https://rukminim1.flixcart.com/image/580/696/kg2l47k0-0/sandal/g/t/f/205089-0a3-crocs-charcoal-volt-green-original-imafwe5hb8gmhfxu.jpeg?q=50",
+  },
+  {
+    id: 2,
+    name: "Laptops",
+    imgUrl:
+      "https://rukminim1.flixcart.com/image/580/696/kg2l47k0-0/sandal/g/t/f/205089-0a3-crocs-charcoal-volt-green-original-imafwe5hb8gmhfxu.jpeg?q=50",
+  },
+  {
+    id: 3,
+    name: "Monitors",
+    imgUrl:
+      "https://rukminim1.flixcart.com/image/580/696/kg2l47k0-0/sandal/g/t/f/205089-0a3-crocs-charcoal-volt-green-original-imafwe5hb8gmhfxu.jpeg?q=50",
+  },
+  {
+    id: 4,
+    name: "Storage",
+    imgUrl:
+      "https://rukminim1.flixcart.com/image/580/696/kg2l47k0-0/sandal/g/t/f/205089-0a3-crocs-charcoal-volt-green-original-imafwe5hb8gmhfxu.jpeg?q=50",
+  },
+  {
+    id: 5,
+    name: "Headphones",
+    imgUrl:
+      "https://rukminim1.flixcart.com/image/580/696/kg2l47k0-0/sandal/g/t/f/205089-0a3-crocs-charcoal-volt-green-original-imafwe5hb8gmhfxu.jpeg?q=50",
+  },
 ];

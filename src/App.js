@@ -1,4 +1,5 @@
 import "./styles.css";
+import Home from "./components/Home/Home";
 import ProductListing from "./components/ProductListing/ProductListing";
 import Cart from "./components/Cart/Cart";
 import Wishlist from "./components/Wishlist/Wishlist";
@@ -26,19 +27,20 @@ export default function App() {
     <div className="App">
       <CartContextProvider>
         <WishlistContextProvider>
-          <ProductFiltersContextProvider>
-            <Header />
-            <div className="body-container">
-              <Routes>
+          <Header />
+          <div className="body-container">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <ProductFiltersContextProvider>
                 <Route
-                  path="/"
+                  path="/shop"
                   element={<ProductListing products={products} />}
                 />
-                <Route path="/cart" element={<Cart />} />
-                <Route path="/wishlist" element={<Wishlist />} />
-              </Routes>
-            </div>
-          </ProductFiltersContextProvider>
+              </ProductFiltersContextProvider>
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/wishlist" element={<Wishlist />} />
+            </Routes>
+          </div>
         </WishlistContextProvider>
       </CartContextProvider>
     </div>

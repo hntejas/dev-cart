@@ -1,4 +1,5 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { ProductFiltersContext } from "../../../store/product-filter/productFilterContext";
 import { brands, categories } from "../../../data";
 import * as filterActionTypes from "../../../store/constants/filterActionType";
@@ -8,6 +9,20 @@ export default function ProductListingFilter() {
   const { productFilters, productFiltersDispatch } = useContext(
     ProductFiltersContext
   );
+
+  function useQuery() {
+    return new URLSearchParams(useLocation().search);
+  }
+
+  let query = useQuery();
+
+  useEffect(() => {
+    const brand = query.get("brand");
+    const category = query.get("category");
+    brand && handleBrandingFilter(brand);
+    category && handleCategoryFilter(category);
+    window.scrollTo(0, 0);
+  }, []);
 
   const clearFilters = () => {
     productFiltersDispatch({
@@ -63,15 +78,15 @@ export default function ProductListingFilter() {
 
         {brands.map((brand) => {
           return (
-            <li key={brand}>
+            <li key={brand.id}>
               <label>
                 <input
                   type="checkbox"
-                  value={brand}
-                  checked={productFilters.brands.includes(brand)}
-                  onChange={() => handleBrandingFilter(brand)}
+                  value={brand.name}
+                  checked={productFilters.brands.includes(brand.name)}
+                  onChange={() => handleBrandingFilter(brand.name)}
                 />
-                {brand}
+                {brand.name}
               </label>
             </li>
           );
@@ -85,17 +100,17 @@ export default function ProductListingFilter() {
 
         {categories.map((category) => {
           return (
-            <li key={category}>
+            <li key={category.id}>
               <label>
                 <input
                   type="checkbox"
-                  value={category}
-                  checked={productFilters.categories.includes(category)}
+                  value={category.name}
+                  checked={productFilters.categories.includes(category.name)}
                   onChange={() => {
-                    handleCategoryFilter(category);
+                    handleCategoryFilter(category.name);
                   }}
                 />
-                {category}
+                {category.name}
               </label>
             </li>
           );

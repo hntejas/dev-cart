@@ -17,7 +17,7 @@ export default function Header() {
           showNav && setShowNav(false);
         }}
       >
-        <Link to="/" className="header-nav-link">
+        <Link to="/shop" className="header-nav-link">
           Shop
         </Link>
         <Link to="/cart" className="header-nav-link">
@@ -26,9 +26,9 @@ export default function Header() {
         <Link to="/wishlist" className="header-nav-link">
           Wishlist
         </Link>
-        <Link to="/cart" className="header-nav-link">
+        {/* <Link to="/cart" className="header-nav-link">
           Login
-        </Link>
+        </Link> */}
       </div>
       <div
         className="mobile-ham"
