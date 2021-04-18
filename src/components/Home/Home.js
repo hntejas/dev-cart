@@ -6,9 +6,10 @@ export default function Home() {
   return (
     <>
       <div className="home-banner-container">
-        {/* <img src={Banner} className="home-banner-img" /> */}
         <div className="home-banner-content">
-          <h2>Hello Devs 👋</h2>
+          <h2>
+            Hello Devs <span role="img">👋</span>
+          </h2>
           <p>World's first store for the Developer community!</p>
           <p>One stop to enrich your Developer experience</p>
           <Link to="/shop" className="shop-btn">

@@ -9,15 +9,7 @@ export default function Wishlist() {
   return (
     <>
       <div className="wishlist-container">
-        <h2
-          style={{
-            textAlign: "left",
-            paddingLeft: "0.5rem",
-            margin: "0.5rem 0",
-          }}
-        >
-          Wishlist
-        </h2>
+        <h2 className="wishlist-header">Wishlist</h2>
         <ProductList productsToDisplay={wishlist} />
       </div>
     </>

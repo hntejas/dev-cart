@@ -9,6 +9,12 @@
   justify-content: flex-start;
 }
 
+.wishlist-header {
+  text-align: left;
+  padding-left: 0.5rem;
+  margin: 0.5rem 0;
+}
+
 @media (min-width: 1024px) {
   .wishlist-container {
     max-width: 85%;
@@ -25,8 +31,9 @@
   .wishlist-container {
     flex-direction: column;
   }
+
   .product-list {
-    justify-content: space-evenly !important;
+    justify-content: space-evenly;
   }
 
   .cart-products {
