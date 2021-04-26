@@ -40,21 +40,16 @@ export default function Login({ from }) {
     if (!isEmailvalid) {
       setShowErrors(true);
     } else {
-      if (
-        userData.email.value == "test@test.com" &&
-        userData.password.value == "test1234"
-      ) {
-        if (isLoginValid().success) {
-          userDispatch({
-            type: userActionTypes.UPDATE_USER_LOGIN,
-            payload: {
-              isLoggedIn: true,
-            },
-          });
-          navigate(from || -1);
-        } else {
-          showToast(isLoginValid().errorMsg);
-        }
+      if (isLoginValid().success) {
+        userDispatch({
+          type: userActionTypes.UPDATE_USER_LOGIN,
+          payload: {
+            isLoggedIn: true,
+          },
+        });
+        navigate(from || -1);
+      } else {
+        showToast(isLoginValid().errorMsg);
       }
     }
   };
@@ -64,10 +59,6 @@ export default function Login({ from }) {
       (localStorage.getItem("authUsers") &&
         JSON.parse(localStorage.getItem("authUsers"))) ||
       [];
-    const user = {
-      email: userData.email.value,
-      password: userData.password.value,
-    };
     const isUserPresent = existingUsers.find(
       (user) => user.email === userData.email.value
     );
