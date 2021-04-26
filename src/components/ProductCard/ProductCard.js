@@ -1,5 +1,7 @@
 import { useContext } from "react";
+import { Link } from "react-router-dom";
 import { CartContext } from "../../store/cart/cartContext";
+import { UserContext } from "../../store/user/userContext";
 import { WishlistContext } from "../../store/wishlist/wishlistContext";
 import { ADD_TO_CART } from "../../store/constants/cartActionType";
 import {
@@ -11,7 +13,7 @@ import { FiHeart } from "react-icons/fi";
 
 import { Rating } from "@material-ui/lab";
 import Button from "../UI/Button/Button";
-import { formatPrice } from "../../utils/helper";
+import { formatPrice, showToast } from "../../utils/helper";
 import "./product-card.css";
 
 export default function ProductCard({ product }) {
@@ -32,6 +34,7 @@ export default function ProductCard({ product }) {
 
   const { cart, cartDispatch } = useContext(CartContext);
   const { wishlist, wishlistDispatch } = useContext(WishlistContext);
+  const { user } = useContext(UserContext);
 
   const isProductInCart = !!cart.cartLines.find(
     (cartLine) => cartLine.product.id === id
@@ -51,6 +54,19 @@ export default function ProductCard({ product }) {
   };
 
   const toggleWishlist = () => {
+    if (!user.isLoggedIn) {
+      showToast(
+        <p>
+          Pease{" "}
+          <Link to="/login" style={{ color: "blue" }}>
+            LOGIN
+          </Link>{" "}
+          to add use this feature
+        </p>
+      );
+      return;
+    }
+
     let data = {
       type: isProductInWishlist ? REMOVE_FROM_WISHLIST : ADD_TO_WISHLIST,
       payload: {

@@ -1,8 +1,11 @@
-import { brands, categories } from "../../data";
+import { useContext } from "react";
+import { DataContext } from "../../store/data/dataContext";
 import { Link } from "react-router-dom";
 import "./home.css";
 
 export default function Home() {
+  const { brands, categories } = useContext(DataContext);
+
   return (
     <>
       <div className="home-banner-container">

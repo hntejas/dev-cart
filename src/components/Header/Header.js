@@ -1,11 +1,26 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { HiShoppingCart } from "react-icons/hi";
 import "./header.css";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { UserContext } from "../../store/user/userContext";
+import * as userActionTypes from "../../store/constants/userActionType";
 
 export default function Header() {
   const [showNav, setShowNav] = useState(false);
+  const { user, userDispatch } = useContext(UserContext);
+  const navigate = useNavigate();
+
+  const logout = () => {
+    userDispatch({
+      type: userActionTypes.UPDATE_USER_LOGIN,
+      payload: {
+        isLoggedIn: false,
+      },
+    });
+    navigate("/");
+  };
+
   return (
     <nav className="header">
       <Link to="/" className="header-logo">
@@ -26,9 +41,15 @@ export default function Header() {
         <Link to="/wishlist" className="header-nav-link">
           Wishlist
         </Link>
-        {/* <Link to="/cart" className="header-nav-link">
-          Login
-        </Link> */}
+        {!user.isLoggedIn ? (
+          <Link to="/login" className="header-nav-link">
+            Login
+          </Link>
+        ) : (
+          <div className="header-nav-link" onClick={logout}>
+            Logout
+          </div>
+        )}
       </div>
       <div
         className="mobile-ham"
