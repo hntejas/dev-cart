@@ -1,13 +1,9 @@
+import { useContext } from "react";
+
 import Button from "../../UI/Button/Button";
 import Counter from "../../Counter/Counter";
-
 import { CartContext } from "../../../store/cart/cartContext";
-import { useContext } from "react";
-import {
-  UPDATE_QUANTITY,
-  REMOVE_FROM_CART,
-} from "../../../store/constants/cartActionType";
-
+import * as cartActionTypes from "../../../store/types/cartActionType";
 import { formatPrice } from "../../../utils/helper";
 import "./cart-product.css";
 
@@ -21,7 +17,7 @@ export default function CartProduct({ cartLine }) {
 
   const updateQuantity = (type) => {
     cartDispatch({
-      type: UPDATE_QUANTITY,
+      type: cartActionTypes.UPDATE_QUANTITY,
       payload: {
         productId: id,
         newQuantity:
@@ -32,7 +28,7 @@ export default function CartProduct({ cartLine }) {
 
   const removeItem = () => {
     cartDispatch({
-      type: REMOVE_FROM_CART,
+      type: cartActionTypes.REMOVE_FROM_CART,
       payload: {
         productId: id,
       },

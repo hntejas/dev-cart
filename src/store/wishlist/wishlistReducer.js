@@ -1,4 +1,4 @@
-import * as wishlistActionTypes from "../constants/wishlistActionType";
+import * as wishlistActionTypes from "../types/wishlistActionType";
 
 const addToWishlist = (wishlist, { product }) => {
   return [...wishlist, product];

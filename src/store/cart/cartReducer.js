@@ -1,8 +1,4 @@
-import {
-  ADD_TO_CART,
-  UPDATE_QUANTITY,
-  REMOVE_FROM_CART,
-} from "../constants/cartActionType";
+import * as cartActionTypes from "../types/cartActionType";
 
 const addToCart = (cartState, { product, quantity }) => {
   const cartStateCopy = { ...cartState };
@@ -87,11 +83,11 @@ const updateCartTotalAndQuantity = (cartStateCopy) => {
 
 export const cartReducer = (cartState, action) => {
   switch (action.type) {
-    case ADD_TO_CART:
+    case cartActionTypes.ADD_TO_CART:
       return addToCart(cartState, action.payload);
-    case UPDATE_QUANTITY:
+    case cartActionTypes.UPDATE_QUANTITY:
       return updateQuantity(cartState, action.payload);
-    case REMOVE_FROM_CART:
+    case cartActionTypes.REMOVE_FROM_CART:
       return removeFromCart(cartState, action.payload);
     default:
       return cartState;

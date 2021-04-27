@@ -1,4 +1,5 @@
 import { createContext, useReducer } from "react";
+
 import { cartReducer } from "./cartReducer";
 
 export const CartContext = createContext();
@@ -7,7 +8,7 @@ const initialCartState = {
   cartLines: [
     {
       product: {
-        id: 1,
+        id: "6083f98d337817053e38c9a4",
         imgUrl:
           "https://rukminim1.flixcart.com/image/580/696/kg2l47k0-0/sandal/g/t/f/205089-0a3-crocs-charcoal-volt-green-original-imafwe5hb8gmhfxu.jpeg?q=50", //"https://via.placeholder.com/200",
         title: "Product Title 1",

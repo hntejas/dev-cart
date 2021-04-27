@@ -1,7 +1,9 @@
 import { useState, useContext } from "react";
-import { UserContext } from "../../../store/user/userContext";
-import * as userActionTypes from "../../../store/constants/userActionType";
+
 import { Link, useNavigate } from "react-router-dom";
+
+import { UserContext } from "../../../store/user/userContext";
+import * as userActionTypes from "../../../store/types/userActionType";
 import { showToast } from "../../../utils/helper";
 import "../auth.css";
 
@@ -31,10 +33,9 @@ export default function Login({ from }) {
   const { userDispatch } = useContext(UserContext);
   const [userData, setUserData] = useState(initialUserData);
   const [showErrors, setShowErrors] = useState(false);
-
   const navigate = useNavigate();
 
-  const login = (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
     const isEmailvalid = validateForm();
     if (!isEmailvalid) {
@@ -52,6 +53,18 @@ export default function Login({ from }) {
         showToast(isLoginValid().errorMsg);
       }
     }
+  };
+
+  const onChangeHandler = (e) => {
+    showErrors && setShowErrors(false);
+    const currentTarget = e.currentTarget;
+    const id = e.currentTarget.id;
+    setUserData(function (state) {
+      const stateCopy = JSON.parse(JSON.stringify(state));
+      stateCopy[id].isValid = validateField(id, currentTarget.value);
+      stateCopy[id].value = currentTarget.value;
+      return stateCopy;
+    });
   };
 
   const isLoginValid = () => {
@@ -86,21 +99,9 @@ export default function Login({ from }) {
     return isFormValid;
   };
 
-  const onChangeHandler = (e) => {
-    showErrors && setShowErrors(false);
-    const currentTarget = e.currentTarget;
-    const id = e.currentTarget.id;
-    setUserData(function (state) {
-      const stateCopy = JSON.parse(JSON.stringify(state));
-      stateCopy[id].isValid = validateField(id, currentTarget.value);
-      stateCopy[id].value = currentTarget.value;
-      return stateCopy;
-    });
-  };
-
   return (
     <div className="auth-container">
-      <form className="auth-form" onSubmit={login}>
+      <form className="auth-form" onSubmit={onSubmit}>
         <h3>Login</h3>
         <label>Email</label>
         <input

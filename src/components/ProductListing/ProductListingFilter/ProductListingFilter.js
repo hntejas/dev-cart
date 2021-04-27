@@ -1,8 +1,10 @@
 import { useContext, useEffect } from "react";
+
 import { useLocation } from "react-router-dom";
+
 import { ProductFiltersContext } from "../../../store/product-filter/productFilterContext";
 import { brands, categories } from "../../../data";
-import * as filterActionTypes from "../../../store/constants/filterActionType";
+import * as filterActionTypes from "../../../store/types/filterActionType";
 import "./product-listing-filter.css";
 
 export default function ProductListingFilter() {
@@ -13,7 +15,6 @@ export default function ProductListingFilter() {
   function useQuery() {
     return new URLSearchParams(useLocation().search);
   }
-
   let query = useQuery();
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import * as userActionTypes from "../constants/userActionType";
+import * as userActionTypes from "../types/userActionType";
 
 const updateUserLogin = (state, { isLoggedIn }) => {
   return { ...state, isLoggedIn: isLoggedIn };

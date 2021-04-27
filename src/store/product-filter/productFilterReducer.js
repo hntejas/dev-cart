@@ -1,4 +1,4 @@
-import * as filterActionTypes from "../constants/filterActionType";
+import * as filterActionTypes from "../types/filterActionType";
 import { initialProductFilters } from "./productFilterContext";
 
 const updateBrands = (state, { brand }) => {

@@ -1,11 +1,12 @@
 import { useContext } from "react";
+
 import { CartContext } from "../../store/cart/cartContext";
 import { formatPrice } from "../../utils/helper";
-
 import "./cart-summary.css";
 
 export default function CartSummary() {
   const { cart } = useContext(CartContext);
+
   return (
     <div className="cart-summary-container">
       <h3>Cart Summary</h3>

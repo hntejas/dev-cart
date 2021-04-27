@@ -1,10 +1,12 @@
+import { useState, useContext } from "react";
+
 import { Link, useNavigate } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { HiShoppingCart } from "react-icons/hi";
-import "./header.css";
-import { useState, useContext } from "react";
+
 import { UserContext } from "../../store/user/userContext";
-import * as userActionTypes from "../../store/constants/userActionType";
+import * as userActionTypes from "../../store/types/userActionType";
+import "./header.css";
 
 export default function Header() {
   const [showNav, setShowNav] = useState(false);

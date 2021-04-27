@@ -1,5 +1,7 @@
 import { useState } from "react";
+
 import { Link } from "react-router-dom";
+
 import { showToast } from "../../../utils/helper";
 import "../auth.css";
 
@@ -47,7 +49,7 @@ export default function SignUp() {
   const [userData, setUserData] = useState(initialUserData);
   const [showErrors, setShowErrors] = useState(false);
 
-  const signup = (e) => {
+  const onSubmit = (e) => {
     e.preventDefault();
     const isFormValid = validateForm();
     if (!isFormValid) {
@@ -106,7 +108,7 @@ export default function SignUp() {
 
   return (
     <div className="auth-container">
-      <form className="auth-form" onSubmit={signup}>
+      <form className="auth-form" onSubmit={onSubmit}>
         <h3>Signup</h3>
         <label>Name</label>
         <input

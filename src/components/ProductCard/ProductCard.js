@@ -1,19 +1,20 @@
 import { useContext } from "react";
+
 import { Link } from "react-router-dom";
+import { FaHeart } from "react-icons/fa";
+import { FiHeart } from "react-icons/fi";
+import { Rating } from "@material-ui/lab";
+
+import Button from "../UI/Button/Button";
 import { CartContext } from "../../store/cart/cartContext";
 import { UserContext } from "../../store/user/userContext";
 import { WishlistContext } from "../../store/wishlist/wishlistContext";
-import { ADD_TO_CART } from "../../store/constants/cartActionType";
+import { formatPrice, showToast } from "../../utils/helper";
+import { ADD_TO_CART } from "../../store/types/cartActionType";
 import {
   ADD_TO_WISHLIST,
   REMOVE_FROM_WISHLIST,
-} from "../../store/constants/wishlistActionType";
-import { FaHeart } from "react-icons/fa";
-import { FiHeart } from "react-icons/fi";
-
-import { Rating } from "@material-ui/lab";
-import Button from "../UI/Button/Button";
-import { formatPrice, showToast } from "../../utils/helper";
+} from "../../store/types/wishlistActionType";
 import "./product-card.css";
 
 export default function ProductCard({ product }) {
@@ -36,15 +37,27 @@ export default function ProductCard({ product }) {
   const { wishlist, wishlistDispatch } = useContext(WishlistContext);
   const { user } = useContext(UserContext);
 
-  const isProductInCart = !!cart.cartLines.find(
-    (cartLine) => cartLine.product.id === id
-  );
+  const isProductInCart =
+    user.isLoggedIn &&
+    !!cart.cartLines.find((cartLine) => cartLine.product.id === id);
 
-  const isProductInWishlist = !!wishlist.find(
-    (wishlistProduct) => wishlistProduct.id === id
-  );
+  const isProductInWishlist =
+    user.isLoggedIn &&
+    !!wishlist.find((wishlistProduct) => wishlistProduct.id === id);
 
   const addToCart = (product) => {
+    if (!user.isLoggedIn) {
+      showToast(
+        <p>
+          Pease{" "}
+          <Link to="/login" style={{ color: "blue" }}>
+            LOGIN
+          </Link>{" "}
+          to use the cart
+        </p>
+      );
+      return;
+    }
     cartDispatch({
       type: ADD_TO_CART,
       payload: {
@@ -61,7 +74,7 @@ export default function ProductCard({ product }) {
           <Link to="/login" style={{ color: "blue" }}>
             LOGIN
           </Link>{" "}
-          to add use this feature
+          to add to wishlist
         </p>
       );
       return;

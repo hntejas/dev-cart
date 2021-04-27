@@ -1,6 +1,8 @@
 import { useContext } from "react";
-import { DataContext } from "../../store/data/dataContext";
+
 import { Link } from "react-router-dom";
+
+import { DataContext } from "../../store/data/dataContext";
 import "./home.css";
 
 export default function Home() {

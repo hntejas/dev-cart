@@ -1,13 +1,11 @@
-import React, { useState } from "react";
+import { useState, useContext } from "react";
+
+import { BsFilterRight } from "react-icons/bs";
 
 import ProductListingFilter from "./ProductListingFilter/ProductListingFilter";
 import ProductList from "./ProductList/ProductList";
-
-import { useContext, useEffect } from "react";
 import { ProductFiltersContext } from "../../store/product-filter/productFilterContext";
-
 import "./product-listing.css";
-import { BsFilterRight } from "react-icons/bs";
 
 export default function ProductListing({ products }) {
   const { productFilters } = useContext(ProductFiltersContext);
