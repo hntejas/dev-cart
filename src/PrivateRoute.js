@@ -9,6 +9,6 @@ export default function PrivateRoute({ path, ...props }) {
   return user.isLoggedIn ? (
     <Route {...props} path={path} />
   ) : (
-    <Route {...props} element={<Login from={path} />} />
+    <Route {...props} path="/login" element={<Login from={path} />} />
   );
 }

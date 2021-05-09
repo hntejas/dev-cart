@@ -3,7 +3,8 @@ import { useContext, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 import { ProductFiltersContext } from "../../../store/product-filter/productFilterContext";
-import { brands, categories } from "../../../data";
+// import { brands, categories } from "../../../data";
+import { DataContext } from "../../../store/data/dataContext";
 import * as filterActionTypes from "../../../store/types/filterActionType";
 import "./product-listing-filter.css";
 
@@ -11,6 +12,7 @@ export default function ProductListingFilter() {
   const { productFilters, productFiltersDispatch } = useContext(
     ProductFiltersContext
   );
+  const { brands, categories } = useContext(DataContext);
 
   function useQuery() {
     return new URLSearchParams(useLocation().search);

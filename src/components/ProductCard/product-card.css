@@ -24,6 +24,7 @@
   width: 100%;
   height: max-content;
   max-height: 100%;
+  object-fit: scale-down;
 }
 
 .card-details-container {
@@ -44,6 +45,8 @@
   margin: 0.3rem 0;
   font-weight: bold;
   font-size: 0.9rem;
+  text-align: left;
+  min-height: 2rem;
 }
 
 .card-pricing-container {
@@ -85,6 +88,7 @@
   justify-content: center;
   align-items: center;
   font-size: 1.2rem;
+  background: lightgrey;
 }
 
 .btn-wishlist-container:hover {
@@ -95,7 +99,7 @@
   .product-list {
     justify-content: space-evenly;
   }
-  .card-container {
+  .card-container:not(:last-child) {
     min-width: unset;
     width: calc(50% - 10px);
     margin: 0.1rem 0;

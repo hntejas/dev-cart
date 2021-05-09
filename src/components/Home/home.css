@@ -6,15 +6,18 @@
   background-size: cover;
   background-repeat: no-repeat;
   position: relative;
+  background: #ffc32e;
+  text-align: left;
 }
 
 .home-banner-img {
-  width: 100%;
+  width: auto;
   height: 100%;
+  margin-left: 1rem;
 }
 
 .home-container {
-  max-width: 800px;
+  max-width: 900px;
   margin: auto;
 }
 
@@ -32,6 +35,7 @@
   background: white;
   height: max-content;
   padding: 1rem;
+  text-align: center;
 }
 
 .feature-container {
@@ -55,6 +59,7 @@
 
 .feature-card-img {
   width: 100%;
+  border-radius: 50%;
 }
 
 .shop-btn {
@@ -76,7 +81,9 @@
     margin-right: auto;
     left: 0;
     right: 0;
-    text-align: center;
+  }
+  .home-banner-img {
+    display: none;
   }
   .feature-card {
     width: 45%;

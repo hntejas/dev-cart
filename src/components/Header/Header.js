@@ -1,16 +1,18 @@
 import { useState, useContext } from "react";
 
 import { Link, useNavigate } from "react-router-dom";
-import { GiHamburgerMenu } from "react-icons/gi";
+import { GiHamburgerMenu, GiHearts } from "react-icons/gi";
 import { HiShoppingCart } from "react-icons/hi";
 
 import { UserContext } from "../../store/user/userContext";
+import { CartContext } from "../../store/cart/cartContext";
 import * as userActionTypes from "../../store/types/userActionType";
 import "./header.css";
 
 export default function Header() {
   const [showNav, setShowNav] = useState(false);
   const { user, userDispatch } = useContext(UserContext);
+  const { cart } = useContext(CartContext);
   const navigate = useNavigate();
 
   const logout = () => {
@@ -38,10 +40,15 @@ export default function Header() {
           Shop
         </Link>
         <Link to="/cart" className="header-nav-link">
-          Cart
+          <div className="icon">
+            Cart
+            {cart.cartQuantity > 0 && user.isLoggedIn && (
+              <span className="icon-badge">{cart.cartQuantity}</span>
+            )}
+          </div>
         </Link>
         <Link to="/wishlist" className="header-nav-link">
-          Wishlist
+          <div>Wishlist</div>
         </Link>
         {!user.isLoggedIn ? (
           <Link to="/login" className="header-nav-link">
