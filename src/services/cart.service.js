@@ -40,7 +40,7 @@ export async function updateItemQuantity(itemId, quantity) {
       { itemId, quantity },
       {
         headers: {
-          Authorization: authToken + "1",
+          Authorization: authToken,
         },
       }
     )
