@@ -1,4 +1,11 @@
-import * as cartActionTypes from "../types/cartActionType";
+import * as cartActionTypes from "./cartActionType";
+
+const syncCart = (cartState, { cart }) => {
+  const cartStateCopy = { ...cartState };
+  cartStateCopy.cartLines = cart.cartLines;
+  const updatedCart = updateCartTotalAndQuantity(cartStateCopy);
+  return updatedCart;
+};
 
 const addToCart = (cartState, { product, quantity }) => {
   const cartStateCopy = { ...cartState };
@@ -56,22 +63,29 @@ const removeFromCart = (cartState, { productId }) => {
   return updatedCart;
 };
 
+const emptyCart = (cartState) => {
+  const cartStateCopy = { ...cartState };
+
+  cartStateCopy.cartLines = [];
+
+  const updatedCart = updateCartTotalAndQuantity(cartStateCopy);
+  return updatedCart;
+};
+
 const updateCartTotalAndQuantity = (cartStateCopy) => {
-  const {
-    totalCartQuantity,
-    totalCartAmount,
-    totalCartBasePrice,
-  } = cartStateCopy.cartLines.reduce(
-    (acc, cartLine) => {
-      return {
-        ...acc,
-        totalCartQuantity: acc.totalCartQuantity + cartLine.quantity,
-        totalCartAmount: acc.totalCartAmount + cartLine.amount,
-        totalCartBasePrice: acc.totalCartBasePrice + cartLine.totalBaseAmount,
-      };
-    },
-    { totalCartQuantity: 0, totalCartAmount: 0, totalCartBasePrice: 0 }
-  );
+  const { totalCartQuantity, totalCartAmount, totalCartBasePrice } =
+    cartStateCopy.cartLines.reduce(
+      (acc, cartLine) => {
+        return {
+          ...acc,
+          totalCartQuantity: acc.totalCartQuantity + cartLine.quantity,
+          totalCartAmount: acc.totalCartAmount + cartLine.product.price,
+          totalCartBasePrice:
+            acc.totalCartBasePrice + cartLine.product.basePrice,
+        };
+      },
+      { totalCartQuantity: 0, totalCartAmount: 0, totalCartBasePrice: 0 }
+    );
 
   return {
     ...cartStateCopy,
@@ -83,12 +97,16 @@ const updateCartTotalAndQuantity = (cartStateCopy) => {
 
 export const cartReducer = (cartState, action) => {
   switch (action.type) {
+    case cartActionTypes.SYNC_CART:
+      return syncCart(cartState, action.payload);
     case cartActionTypes.ADD_TO_CART:
       return addToCart(cartState, action.payload);
     case cartActionTypes.UPDATE_QUANTITY:
       return updateQuantity(cartState, action.payload);
     case cartActionTypes.REMOVE_FROM_CART:
       return removeFromCart(cartState, action.payload);
+    case cartActionTypes.EMPTY_CART:
+      return emptyCart(cartState);
     default:
       return cartState;
   }

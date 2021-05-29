@@ -1,38 +1,50 @@
-import { useContext } from "react";
-
 import Button from "../../UI/Button/Button";
 import Counter from "../../Counter/Counter";
-import { CartContext } from "../../../store/cart/cartContext";
-import * as cartActionTypes from "../../../store/types/cartActionType";
-import { formatPrice } from "../../../utils/helper";
+import { useCart } from "../../../store/cart";
+import {
+  updateItemQuantity,
+  removeItemFromCart,
+} from "../../../services/cart.service";
+import { formatPrice, showToast } from "../../../utils/helper";
 import "./cart-product.css";
 
 export default function CartProduct({ cartLine }) {
-  const { cartDispatch } = useContext(CartContext);
+  const { cartDispatch, cartActionTypes } = useCart();
   const { id, title, brand, imgUrl, price, basePrice } = cartLine.product;
   const discount =
     basePrice && basePrice > price
       ? parseInt(((basePrice - price) / basePrice) * 100, 10)
       : null;
 
-  const updateQuantity = (type) => {
-    cartDispatch({
-      type: cartActionTypes.UPDATE_QUANTITY,
-      payload: {
-        productId: id,
-        newQuantity:
-          type === "DECREMENT" ? cartLine.quantity - 1 : cartLine.quantity + 1,
-      },
-    });
+  const updateQuantity = async (type) => {
+    const newQuantity =
+      type === "DECREMENT" ? cartLine.quantity - 1 : cartLine.quantity + 1;
+    const response = await updateItemQuantity(id, newQuantity);
+
+    if (response.success) {
+      cartDispatch({
+        type: cartActionTypes.SYNC_CART,
+        payload: {
+          cart: response.cart,
+        },
+      });
+      showToast(<p>Product quantity updated to {newQuantity}</p>);
+    } else {
+      showToast(<p>Ops! Could not update, please try again later</p>);
+    }
   };
 
-  const removeItem = () => {
-    cartDispatch({
-      type: cartActionTypes.REMOVE_FROM_CART,
-      payload: {
-        productId: id,
-      },
-    });
+  const removeItem = async () => {
+    const response = await removeItemFromCart(id);
+    if (response.success) {
+      cartDispatch({
+        type: cartActionTypes.SYNC_CART,
+        payload: {
+          cart: response.cart,
+        },
+      });
+      showToast(<p>Item removed</p>);
+    }
   };
 
   return (

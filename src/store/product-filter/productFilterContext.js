@@ -1,5 +1,6 @@
 import { createContext, useReducer } from "react";
 import filterReducer from "./productFilterReducer";
+import * as filterActionTypes from "./filterActionType";
 
 export const ProductFiltersContext = createContext();
 
@@ -23,7 +24,7 @@ export function ProductFiltersContextProvider({ children }) {
 
   return (
     <ProductFiltersContext.Provider
-      value={{ productFilters, productFiltersDispatch }}
+      value={{ productFilters, productFiltersDispatch, filterActionTypes }}
     >
       {children}
     </ProductFiltersContext.Provider>

@@ -1,16 +1,17 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 
-import { UserContext } from "../../../store/user/userContext";
-import * as userActionTypes from "../../../store/types/userActionType";
+import { useUser } from "../../../store/user";
 import { showToast } from "../../../utils/helper";
+import { login } from "../../../services/auth.service";
 import "../auth.css";
 
-export default function Login({ from }) {
+export default function Login() {
   const validators = {
     email: (email) => {
-      const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      const emailRegex =
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return emailRegex.test(String(email).toLowerCase());
     },
     password: (password) => {
@@ -30,18 +31,26 @@ export default function Login({ from }) {
     },
   };
 
-  const { userDispatch } = useContext(UserContext);
+  let from = "";
+  const { userDispatch, userActionTypes } = useUser();
   const [userData, setUserData] = useState(initialUserData);
   const [showErrors, setShowErrors] = useState(false);
   const navigate = useNavigate();
+  const { state } = useLocation();
+  from = state?.from;
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     const isEmailvalid = validateForm();
     if (!isEmailvalid) {
       setShowErrors(true);
     } else {
-      if (isLoginValid().success) {
+      const response = await login({
+        email: userData.email.value,
+        password: userData.password.value,
+      });
+      if (response.success) {
+        addTokenToStorage(response.token);
         userDispatch({
           type: userActionTypes.UPDATE_USER_LOGIN,
           payload: {
@@ -50,9 +59,18 @@ export default function Login({ from }) {
         });
         navigate(from || -1);
       } else {
-        showToast(isLoginValid().errorMsg);
+        showToast(
+          <p>Login failed! {response.error && response.error.message}</p>
+        );
       }
     }
+  };
+
+  const addTokenToStorage = (token) => {
+    localStorage.setItem(
+      "devCartAuth",
+      JSON.stringify({ isLoggedIn: true, token: token })
+    );
   };
 
   const onChangeHandler = (e) => {
@@ -65,24 +83,6 @@ export default function Login({ from }) {
       stateCopy[id].value = currentTarget.value;
       return stateCopy;
     });
-  };
-
-  const isLoginValid = () => {
-    const existingUsers =
-      (localStorage.getItem("authUsers") &&
-        JSON.parse(localStorage.getItem("authUsers"))) ||
-      [];
-    const isUserPresent = existingUsers.find(
-      (user) => user.email === userData.email.value
-    );
-    const isPasswordValid =
-      isUserPresent && isUserPresent.password === userData.password.value;
-    return {
-      success: isUserPresent && isPasswordValid,
-      errorMsg: isUserPresent
-        ? "Invalid password!"
-        : "User does not exist, please Signup",
-    };
   };
 
   const validateField = (field, value) => {
@@ -140,7 +140,10 @@ export default function Login({ from }) {
           login
         </button>
         <p>
-          Not a user? <Link to="/signup">Signup</Link>
+          Not a user?{" "}
+          <Link state={{ from: from }} replace to="/signup">
+            Signup
+          </Link>
         </p>
       </form>
     </div>

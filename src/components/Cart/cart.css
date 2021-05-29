@@ -18,6 +18,15 @@
   margin-left: 0.5rem;
 }
 
+.checkout-btn {
+  background: #ff9f00;
+  color: white;
+  margin-top: 1rem;
+  width: calc(100% - 2rem);
+  text-decoration: none;
+  display: block;
+}
+
 @media (min-width: 1024px) {
   .cart-container {
     max-width: 85%;

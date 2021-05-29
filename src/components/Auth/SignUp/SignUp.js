@@ -1,6 +1,7 @@
 import { useState } from "react";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { signup } from "../../../services/auth.service";
 
 import { showToast } from "../../../utils/helper";
 import "../auth.css";
@@ -11,7 +12,8 @@ export default function SignUp() {
       return name.length > 0;
     },
     email: (email) => {
-      const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      const emailRegex =
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return emailRegex.test(String(email).toLowerCase());
     },
     password: (password) => {
@@ -49,7 +51,7 @@ export default function SignUp() {
   const [userData, setUserData] = useState(initialUserData);
   const [showErrors, setShowErrors] = useState(false);
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     const isFormValid = validateForm();
     if (!isFormValid) {
@@ -59,23 +61,15 @@ export default function SignUp() {
         email: userData.email.value,
         password: userData.password.value,
       };
-      const existingUsers =
-        (localStorage.getItem("authUsers") &&
-          JSON.parse(localStorage.getItem("authUsers"))) ||
-        [];
 
-      const isUserPresent = !!existingUsers.find(
-        (user) => user.email === userData.email.value
-      );
-      if (isUserPresent) {
-        showToast(<p>User already exists, Please LOGIN</p>);
-        return;
+      const response = await signup(user);
+      if (response.success) {
+        showToast(<p>Signup Successful, please LOGIN</p>);
+      } else {
+        showToast(
+          <p>Signup Failed!! {response.error && response.error.message}</p>
+        );
       }
-      localStorage.setItem(
-        "authUsers",
-        JSON.stringify([...existingUsers, user])
-      );
-      showToast(<p>Signup Successful, please LOGIN</p>);
     }
   };
 

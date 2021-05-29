@@ -12,3 +12,11 @@ export function showToast(text) {
     style: { background: "#181818", minHeight: "2rem" },
   });
 }
+
+export const isLoggedInLocally = () =>
+  localStorage.getItem("devCartAuth") &&
+  JSON.parse(localStorage.getItem("devCartAuth"))["isLoggedIn"];
+
+export const getAuthToken = () =>
+  localStorage.getItem("devCartAuth") &&
+  JSON.parse(localStorage.getItem("devCartAuth"))["token"];

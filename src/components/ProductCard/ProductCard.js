@@ -6,36 +6,29 @@ import { FiHeart } from "react-icons/fi";
 import { Rating } from "@material-ui/lab";
 
 import Button from "../UI/Button/Button";
-import { CartContext } from "../../store/cart/cartContext";
-import { UserContext } from "../../store/user/userContext";
-import { WishlistContext } from "../../store/wishlist/wishlistContext";
+import { useCart } from "../../store/cart";
+import { useUser } from "../../store/user";
+import { useWishlist } from "../../store/wishlist";
 import { formatPrice, showToast } from "../../utils/helper";
-import { ADD_TO_CART } from "../../store/types/cartActionType";
+
+import { addItemToCart } from "../../services/cart.service";
 import {
-  ADD_TO_WISHLIST,
-  REMOVE_FROM_WISHLIST,
-} from "../../store/types/wishlistActionType";
+  addItemToWishlist,
+  removeItemFromWishlist,
+} from "../../services/wishlist.service";
 import "./product-card.css";
 
 export default function ProductCard({ product }) {
-  const {
-    id,
-    imgUrl,
-    brand,
-    title,
-    price,
-    basePrice,
-    rating,
-    availability,
-  } = product;
+  const { id, imgUrl, brand, title, price, basePrice, rating, availability } =
+    product;
   const discount =
     basePrice && basePrice > price
       ? parseInt(((basePrice - price) / basePrice) * 100, 10)
       : null;
 
-  const { cart, cartDispatch } = useContext(CartContext);
-  const { wishlist, wishlistDispatch } = useContext(WishlistContext);
-  const { user } = useContext(UserContext);
+  const { cart, cartDispatch, cartActionTypes } = useCart();
+  const { wishlist, wishlistDispatch, wishlistActionTypes } = useWishlist();
+  const { user } = useUser();
 
   const isProductInCart =
     user.isLoggedIn &&
@@ -45,7 +38,7 @@ export default function ProductCard({ product }) {
     user.isLoggedIn &&
     !!wishlist.find((wishlistProduct) => wishlistProduct.id === id);
 
-  const addToCart = (product) => {
+  const addToCart = async (product) => {
     if (!user.isLoggedIn) {
       showToast(
         <p>
@@ -57,16 +50,25 @@ export default function ProductCard({ product }) {
         </p>
       );
       return;
+    } else {
+      (async () => {
+        const response = await addItemToCart(product.id);
+        if (response.success) {
+          cartDispatch({
+            type: cartActionTypes.SYNC_CART,
+            payload: {
+              cart: response.cart,
+            },
+          });
+          showToast(<p>Item added to cart!</p>);
+        } else {
+          showToast(<p>Ops! Something went wrong</p>);
+        }
+      })();
     }
-    cartDispatch({
-      type: ADD_TO_CART,
-      payload: {
-        product: product,
-      },
-    });
   };
 
-  const toggleWishlist = () => {
+  const toggleWishlist = async () => {
     if (!user.isLoggedIn) {
       showToast(
         <p>
@@ -78,15 +80,26 @@ export default function ProductCard({ product }) {
         </p>
       );
       return;
+    } else {
+      const response = isProductInWishlist
+        ? await removeItemFromWishlist(id)
+        : await addItemToWishlist(id);
+      if (response.success) {
+        wishlistDispatch({
+          type: wishlistActionTypes.SYNC_WISHLIST,
+          payload: {
+            wishlist: response.wishlist,
+          },
+        });
+        showToast(
+          <p>
+            {isProductInWishlist
+              ? "Removed from wishlist"
+              : "Added to wishlist!"}
+          </p>
+        );
+      }
     }
-
-    let data = {
-      type: isProductInWishlist ? REMOVE_FROM_WISHLIST : ADD_TO_WISHLIST,
-      payload: {
-        product: product,
-      },
-    };
-    wishlistDispatch(data);
   };
 
   const buttonText = !!isProductInCart
@@ -101,7 +114,7 @@ export default function ProductCard({ product }) {
         <img src={imgUrl} alt={title} className="card-img"></img>
         <div className="btn-wishlist-container" onClick={toggleWishlist}>
           {isProductInWishlist ? (
-            <FaHeart style={{ color: "red" }} />
+            <FaHeart style={{ color: "#F71490" }} />
           ) : (
             <FiHeart />
           )}

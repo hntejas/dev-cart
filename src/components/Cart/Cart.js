@@ -1,13 +1,14 @@
-import { useContext } from "react";
+import { Link } from "react-router-dom";
 
-import { CartContext } from "../../store/cart/cartContext";
+import { useCart } from "../../store/cart";
 import CartProductListing from "./CartProductListing/CartProductListing";
 import CartSummary from "../CartSummary/CartSummary";
 
 import "./cart.css";
 
 export default function Cart() {
-  const { cart } = useContext(CartContext);
+  const { cart } = useCart();
+
   return (
     <div className="cart-container">
       <div className="cart-products">
@@ -15,6 +16,9 @@ export default function Cart() {
       </div>
       <div className="cart-summary">
         <CartSummary />
+        <Link to="/checkout" className="btn checkout-btn">
+          Checkout
+        </Link>
       </div>
     </div>
   );

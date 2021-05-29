@@ -1,11 +1,9 @@
-import { useContext } from "react";
-
-import { CartContext } from "../../store/cart/cartContext";
+import { useCart } from "../../store/cart";
 import { formatPrice } from "../../utils/helper";
 import "./cart-summary.css";
 
 export default function CartSummary() {
-  const { cart } = useContext(CartContext);
+  const { cart } = useCart();
 
   return (
     <div className="cart-summary-container">

@@ -30,7 +30,6 @@ export default function Home() {
       </div>
       <div className="home-container">
         <h2>Range of Categories</h2>
-
         <div className="feature-container">
           {categories.map((category) => {
             return (

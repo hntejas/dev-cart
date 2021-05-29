@@ -99,7 +99,8 @@
   .product-list {
     justify-content: space-evenly;
   }
-  .card-container:not(:last-child) {
+
+  .card-container {
     min-width: unset;
     width: calc(50% - 10px);
     margin: 0.1rem 0;

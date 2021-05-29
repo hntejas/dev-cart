@@ -1,18 +1,17 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 
 import { Link, useNavigate } from "react-router-dom";
-import { GiHamburgerMenu, GiHearts } from "react-icons/gi";
+import { GiHamburgerMenu } from "react-icons/gi";
 import { HiShoppingCart } from "react-icons/hi";
 
-import { UserContext } from "../../store/user/userContext";
-import { CartContext } from "../../store/cart/cartContext";
-import * as userActionTypes from "../../store/types/userActionType";
+import { useUser } from "../../store/user";
+import { useCart } from "../../store/cart";
 import "./header.css";
 
 export default function Header() {
   const [showNav, setShowNav] = useState(false);
-  const { user, userDispatch } = useContext(UserContext);
-  const { cart } = useContext(CartContext);
+  const { user, userDispatch, userActionTypes } = useUser();
+  const { cart } = useCart();
   const navigate = useNavigate();
 
   const logout = () => {

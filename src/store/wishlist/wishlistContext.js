@@ -1,19 +1,25 @@
 import { createContext, useReducer } from "react";
 import { wishlistReducer } from "./wishlistReducer";
+import * as wishlistActionTypes from "./wishlistActionType";
 
 export const WishlistContext = createContext();
 
 const initialWishlistState = [
-  {
-    id: "6083f98d337817053e38c9a4",
-    imgUrl:
-      "https://rukminim1.flixcart.com/image/580/696/kg2l47k0-0/sandal/g/t/f/205089-0a3-crocs-charcoal-volt-green-original-imafwe5hb8gmhfxu.jpeg?q=50", //"https://via.placeholder.com/200",
-    title: "Product Title 1",
-    brand: "Brand 1",
-    price: 1799,
-    basePrice: 1999,
-    rating: 3,
-  },
+  // {
+  //   availability: "IN_STOCK",
+  //   basePrice: 88990,
+  //   brand: "Lenovo",
+  //   category: "Laptops",
+  //   createdAt: "2021-05-09T07:01:40.100Z",
+  //   imgUrl:
+  //     "https://res.cloudinary.com/hntejas/image/upload/v1620456567/dev-cart/lenovo-legion-5.jpg",
+  //   price: 66990,
+  //   rating: 4.5,
+  //   title: "Lenovo Legion 5",
+  //   updatedAt: "2021-05-09T07:01:40.100Z",
+  //   __v: 0,
+  //   id: "609788d49632cf00237769ad",
+  // },
 ];
 
 export function WishlistContextProvider({ children }) {
@@ -23,7 +29,7 @@ export function WishlistContextProvider({ children }) {
   );
   return (
     <WishlistContext.Provider
-      value={{ wishlist, wishlistDispatch: wishlistDispatch }}
+      value={{ wishlist, wishlistDispatch, wishlistActionTypes }}
     >
       {children}
     </WishlistContext.Provider>

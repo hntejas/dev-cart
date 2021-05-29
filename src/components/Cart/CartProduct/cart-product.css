@@ -20,6 +20,7 @@
 
 .cart-product-img {
   width: 120px;
+  height: 120px;
   object-fit: contain;
 }
 
@@ -50,6 +51,7 @@
     margin-left: 0.5rem;
     width: unset;
     min-width: unset;
+    max-width: 55%;
   }
   .cart-product-action-container {
     margin-right: auto;

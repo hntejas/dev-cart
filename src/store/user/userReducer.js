@@ -1,6 +1,9 @@
-import * as userActionTypes from "../types/userActionType";
+import * as userActionTypes from "./userActionType";
 
 const updateUserLogin = (state, { isLoggedIn }) => {
+  if (!isLoggedIn) {
+    localStorage.removeItem("devCartAuth");
+  }
   return { ...state, isLoggedIn: isLoggedIn };
 };
 

@@ -1,11 +1,9 @@
-import { useContext } from "react";
-
 import ProductList from "../ProductListing/ProductList/ProductList";
-import { WishlistContext } from "../../store/wishlist/wishlistContext";
+import { useWishlist } from "../../store/wishlist";
 import "./wishlist.css";
 
 export default function Wishlist() {
-  const { wishlist } = useContext(WishlistContext);
+  const { wishlist } = useWishlist();
   return (
     <>
       <div className="wishlist-container">

@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 import axios from "axios";
+import useAxios from "../../utils/useAxios";
 
 export const DataContext = createContext();
 
@@ -15,11 +16,11 @@ export function DataContextProvider({ children }) {
   }, []);
 
   const loadProducts = async (setProducts) => {
-    const response = await axios.get(
-      "https://dev-cart.hntejas.repl.co/products"
+    const response = await useAxios(
+      axios.get("https://dev-cart.hntejas.repl.co/products")
     );
-    if (response.data.success) {
-      const productsFormatted = response.data.products.map((product) => {
+    if (response.success) {
+      const productsFormatted = response.products.map((product) => {
         return { ...product, id: product._id, _id: undefined };
       });
       setProducts(productsFormatted);
