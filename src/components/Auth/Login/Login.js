@@ -141,7 +141,7 @@ export default function Login() {
         </button>
         <p>
           Not a user?{" "}
-          <Link state={{ from: from }} replace to="/signup">
+          <Link state={{ from: from }} replace to={"/signup?from=" + from}>
             Signup
           </Link>
         </p>

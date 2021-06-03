@@ -6,6 +6,7 @@ import { useCart } from "../cart";
 import { getUserCart } from "../../services/cart.service";
 import { useWishlist } from "../wishlist";
 import { getUserWishlist } from "../../services/wishlist.service";
+import { getAddresses } from "../../services/address.service";
 
 import { isLoggedInLocally } from "../../utils/helper";
 
@@ -47,19 +48,24 @@ const emptyWishlist = async (wishlistDispatch, wishlistActionTypes) => {
   });
 };
 
+const syncAddresses = async (userDispatch, userActionTypes) => {
+  const response = await getAddresses();
+  if (response.success) {
+    userDispatch({
+      type: userActionTypes.SYNC_ADDRESSES,
+      payload: {
+        addresses: response.addresses,
+      },
+    });
+  }
+};
+
 export function UserContextProvider({ children }) {
   const initialUserState = {
     name: "",
     email: "",
     isLoggedIn: isLoggedInLocally(),
-    shippingAddress: {
-      addressLine1: "",
-      addressLine2: "",
-      city: "",
-      state: "",
-      country: "",
-      zip: "",
-    },
+    shippingAddresses: [],
     paymentInfo: {
       cardNumber: "",
       cardName: "",
@@ -75,6 +81,7 @@ export function UserContextProvider({ children }) {
     if (user.isLoggedIn) {
       syncCart(cartDispatch, cartActionTypes);
       syncWishlist(wishlistDispatch, wishlistActionTypes);
+      syncAddresses(userDispatch, userActionTypes);
     } else {
       emptyCart(cartDispatch, cartActionTypes);
       emptyWishlist(wishlistDispatch, wishlistActionTypes);

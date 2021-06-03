@@ -44,6 +44,14 @@ const loaderMessage = {
   signup: {
     post: "Singing Up..",
   },
+  address: {
+    post: "Adding address...",
+    put: "Updating address...",
+    get: "Loading address...",
+  },
+  order: {
+    post: "Placing your order...",
+  },
 };
 
 export const axiosInterceptor = () => {

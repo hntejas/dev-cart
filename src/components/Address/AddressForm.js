@@ -1,7 +1,9 @@
 import { useState } from "react";
-import "./address-form.css";
+import "./address.css";
+import { addAddress, editAddress } from "../../services/address.service";
+import { useUser } from "../../store/user";
 
-export default function AddressForm() {
+export default function AddressForm({ address: currentAddress, closeModal }) {
   const initialAddressState = {
     addressLine1: {
       isValid: false,
@@ -53,6 +55,11 @@ export default function AddressForm() {
     },
   };
 
+  if (currentAddress) {
+    mapInitialAddressValuesToState();
+  }
+
+  const { userDispatch, userActionTypes } = useUser();
   const [address, setAddress] = useState(initialAddressState);
 
   const inputHandler = (e) => {
@@ -79,6 +86,26 @@ export default function AddressForm() {
     });
   };
 
+  const submitAddress = async () => {
+    const isFormValid = validateForm();
+    if (!isFormValid) return;
+    const addressObj = getAddressObj();
+    const response = !currentAddress
+      ? await addAddress(addressObj)
+      : await editAddress({ ...addressObj, _id: currentAddress._id });
+    if (response.success) {
+      userDispatch({
+        type: !currentAddress
+          ? userActionTypes.ADD_ADDRESS
+          : userActionTypes.EDIT_ADDRESS,
+        payload: {
+          address: { ...addressObj, _id: response.addressId },
+        },
+      });
+      closeModal && closeModal();
+    }
+  };
+
   const validateForm = () => {
     const addressCopy = { ...address };
     let isFormValid = true;
@@ -87,12 +114,30 @@ export default function AddressForm() {
       input.isValid = input.isRequired
         ? !!input.value && input.regex.test(input.value)
         : true;
+      input.style = "";
       if (!input.isValid) {
+        input.style = "invalid-input";
         isFormValid = false;
       }
     }
     setAddress(addressCopy);
+    return isFormValid;
   };
+
+  const getAddressObj = () => {
+    const addressObj = {};
+    for (let addressField in address) {
+      const input = address[addressField];
+      addressObj[addressField] = input.value;
+    }
+    return addressObj;
+  };
+
+  function mapInitialAddressValuesToState() {
+    for (let addressField in initialAddressState) {
+      initialAddressState[addressField].value = currentAddress[addressField];
+    }
+  }
 
   return (
     <div className="address-form">
@@ -145,6 +190,9 @@ export default function AddressForm() {
         onBlur={validateField}
         className={address.phone.style}
       />
+      <button className="btn btn-primary" onClick={submitAddress}>
+        {currentAddress ? "Save" : "Add"}
+      </button>
     </div>
   );
 }

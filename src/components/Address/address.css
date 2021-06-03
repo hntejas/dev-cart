@@ -1,0 +1,89 @@
+.address-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.address-manager {
+  width: 80%;
+  margin: auto;
+}
+
+.address-manager .btn {
+  margin: 0;
+  padding: 0.5rem 0.5rem;
+}
+
+.address-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: white;
+  padding-bottom: 1rem;
+  max-width: 90vw;
+  width: 25rem;
+  margin: auto;
+  padding: 1rem;
+}
+
+.payment-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: white;
+  padding-bottom: 1rem;
+  max-width: 90vw;
+  width: 80%;
+  margin: auto;
+}
+
+.address-form h3 {
+  margin-right: auto;
+}
+
+.address-form input {
+  padding: 0.6rem;
+  font-size: 0.8rem;
+  margin: 0.5rem 0;
+  width: 90%;
+}
+
+.payment-form input {
+  padding: 0.6rem;
+  font-size: 0.8rem;
+  margin: 0.5rem 0;
+  width: 90%;
+}
+
+.address-card {
+  text-align: left;
+  margin: 0 1rem;
+  margin-bottom: 1rem;
+}
+
+.address-selector-card {
+  display: flex;
+  align-items: flex-start;
+  margin: auto;
+}
+
+.address-selector-group {
+  display: flex;
+  width: 80%;
+}
+
+.invalid-input {
+  border: 2px solid red;
+}
+
+.inline-inputs {
+  display: flex;
+  justify-content: space-between;
+  width: calc(90% + 1.2rem + 4px);
+}
+
+@media (max-width: 600px) {
+  .address-manager {
+    width: 90%;
+  }
+}

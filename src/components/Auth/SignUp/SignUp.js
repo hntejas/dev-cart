@@ -1,6 +1,7 @@
 import { useState } from "react";
 
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useUser } from "../../../store/user";
 import { signup } from "../../../services/auth.service";
 
 import { showToast } from "../../../utils/helper";
@@ -18,7 +19,7 @@ export default function SignUp() {
     },
     password: (password) => {
       const passwordRegex = /^(?=.*\d)(?=.*[a-zA-Z])[a-zA-Z0-9]{8,}$/;
-      return passwordRegex.test(String(password).toLowerCase());
+      return password.length >= 8;
     },
     reconfirmPassword: (reconfirmPassword) => {
       return reconfirmPassword === userData.password.value;
@@ -38,8 +39,7 @@ export default function SignUp() {
     password: {
       value: "",
       isValid: false,
-      errorMessage:
-        "Password must be atleast 8 characters with minimum 1 number and 1 letter",
+      errorMessage: "Password must be atleast 8 characters",
     },
     reconfirmPassword: {
       value: "",
@@ -48,6 +48,13 @@ export default function SignUp() {
     },
   };
 
+  function useQuery() {
+    return new URLSearchParams(useLocation().search);
+  }
+  let query = useQuery();
+
+  const navigate = useNavigate();
+  const { userDispatch, userActionTypes } = useUser();
   const [userData, setUserData] = useState(initialUserData);
   const [showErrors, setShowErrors] = useState(false);
 
@@ -62,9 +69,18 @@ export default function SignUp() {
         password: userData.password.value,
       };
 
+      let from = "";
+      from = query.get("from");
       const response = await signup(user);
       if (response.success) {
-        showToast(<p>Signup Successful, please LOGIN</p>);
+        addTokenToStorage(response.token);
+        userDispatch({
+          type: userActionTypes.UPDATE_USER_LOGIN,
+          payload: {
+            isLoggedIn: true,
+          },
+        });
+        navigate(from || "/");
       } else {
         showToast(
           <p>Signup Failed!! {response.error && response.error.message}</p>
@@ -98,6 +114,13 @@ export default function SignUp() {
       }
     }
     return isFormValid;
+  };
+
+  const addTokenToStorage = (token) => {
+    localStorage.setItem(
+      "devCartAuth",
+      JSON.stringify({ isLoggedIn: true, token: token })
+    );
   };
 
   return (

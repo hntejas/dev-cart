@@ -57,3 +57,18 @@ export async function removeItemFromCart(itemId) {
     })
   );
 }
+
+export async function placeOrder() {
+  const authToken = getAuthToken();
+  return useAxios(
+    axios.post(
+      "https://dev-cart.hntejas.repl.co/order",
+      {},
+      {
+        headers: {
+          Authorization: authToken,
+        },
+      }
+    )
+  );
+}

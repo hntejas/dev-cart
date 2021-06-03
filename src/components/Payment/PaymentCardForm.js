@@ -1,36 +1,6 @@
-import { useState } from "react";
 import "./payment-card-form.css";
 
-export default function PaymentCardForm() {
-  const initialFormState = {
-    cardNumber: {
-      isValid: false,
-      value: "",
-      isTouched: false,
-      isRequired: true,
-      regex: /^[a-zA-Z0-9_#,&@!%$ .-]*$/,
-      style: "",
-    },
-    cardName: {
-      isValid: true,
-      value: "",
-      isTouched: false,
-      isRequired: false,
-      regex: /^[a-zA-Z0-9_#,&@!%$ .-]*$/,
-      style: "",
-    },
-    expiry: {
-      isValid: false,
-      value: "",
-      isTouched: false,
-      isRequired: true,
-      regex: /^[a-zA-Z0-9_.-]*$/,
-      style: "",
-    },
-  };
-
-  const [payment, setPayment] = useState(initialFormState);
-
+export default function PaymentCardForm({ payment, setPayment }) {
   const inputHandler = (e) => {
     const fieldId = e.target.id;
     setPayment((payment) => {
@@ -55,24 +25,9 @@ export default function PaymentCardForm() {
     });
   };
 
-  const validateForm = () => {
-    const paymentCopy = { ...payment };
-    let isFormValid = true;
-    for (let addressFeild in paymentCopy) {
-      const input = paymentCopy[addressFeild];
-      input.isValid = input.isRequired
-        ? !!input.value && input.regex.test(input.value)
-        : true;
-      if (!input.isValid) {
-        isFormValid = false;
-      }
-    }
-    setPayment(paymentCopy);
-  };
-
   return (
-    <div className="address-form">
-      <h3>Payment</h3>
+    <div className="payment-form">
+      <h3>Card Details</h3>
       <input
         id="cardNumber"
         placeholder="Card Number"
@@ -89,15 +44,28 @@ export default function PaymentCardForm() {
         onBlur={validateField}
         className={payment.cardName.style}
       />
-      <input
-        id="expiry"
-        placeholder="Expiry MM/YY"
-        type={"month"}
-        value={payment.expiry.value}
-        onChange={inputHandler}
-        onBlur={validateField}
-        className={payment.expiry.style}
-      />
+      <div className="inline-inputs">
+        <input
+          id="expiry"
+          placeholder="Expiry MM/YY"
+          type={"month"}
+          value={payment.expiry.value}
+          onChange={inputHandler}
+          onBlur={validateField}
+          className={payment.expiry.style}
+          style={{ width: "70%" }}
+        />
+        <input
+          id="cvv"
+          placeholder="CVV"
+          type="text"
+          value={payment.cvv.value}
+          onChange={inputHandler}
+          onBlur={validateField}
+          className={payment.cvv.style}
+          style={{ width: "30%" }}
+        />
+      </div>
     </div>
   );
 }
