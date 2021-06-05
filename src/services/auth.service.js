@@ -1,10 +1,11 @@
 import axios from "axios";
 import useAxios from "../utils/useAxios";
 
-export async function signup({ email, password }) {
+export async function signup({ name, email, password }) {
   try {
     return useAxios(
       axios.post("https://dev-cart.hntejas.repl.co/auth/signup", {
+        name: name,
         email: email,
         password: password,
       })

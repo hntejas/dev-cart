@@ -65,6 +65,7 @@ export default function SignUp() {
       setShowErrors(true);
     } else {
       const user = {
+        name: userData.name.value,
         email: userData.email.value,
         password: userData.password.value,
       };

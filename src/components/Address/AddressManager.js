@@ -37,10 +37,7 @@ export default function AddressManager({
             selectedAddress={selectedAddress}
           />
           {showAddressForm && (
-            <Modal
-              closeModal={() => setShowAddressForm(false)}
-              isOpen={showAddressForm}
-            >
+            <Modal closeModal={() => {}} isOpen={showAddressForm}>
               <AddressForm closeModal={() => setShowAddressForm(false)} />
             </Modal>
           )}

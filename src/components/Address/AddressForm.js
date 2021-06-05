@@ -18,7 +18,7 @@ export default function AddressForm({ address: currentAddress, closeModal }) {
       value: "",
       isTouched: false,
       isRequired: false,
-      regex: /^[a-zA-Z0-9_.-]*$/,
+      regex: /^[a-zA-Z0-9_#,&@!%$ .-]*$/,
       style: "",
     },
     city: {
@@ -26,7 +26,7 @@ export default function AddressForm({ address: currentAddress, closeModal }) {
       value: "",
       isTouched: false,
       isRequired: true,
-      regex: /^[a-zA-Z0-9_.-]*$/,
+      regex: /^[a-zA-Z .-]*$/,
       style: "",
     },
     state: {
@@ -34,7 +34,7 @@ export default function AddressForm({ address: currentAddress, closeModal }) {
       value: "",
       isTouched: false,
       isRequired: true,
-      regex: /^[a-zA-Z0-9_.-]*$/,
+      regex: /^[a-zA-Z .-]*$/,
       style: "",
     },
     zip: {
@@ -42,7 +42,7 @@ export default function AddressForm({ address: currentAddress, closeModal }) {
       value: "",
       isTouched: false,
       isRequired: true,
-      regex: /^.[0-9]{4,}$/,
+      regex: /^.[0-9]{5,}$/,
       style: "",
     },
     phone: {
@@ -141,7 +141,14 @@ export default function AddressForm({ address: currentAddress, closeModal }) {
 
   return (
     <div className="address-form">
-      <h3>Shipping Address</h3>
+      <div className="address-form-header">
+        <h3>Shipping Address</h3>
+        {closeModal && (
+          <button onClick={closeModal} className="modal-close-btn">
+            &#x274C;
+          </button>
+        )}
+      </div>
       <input
         id="addressLine1"
         placeholder="Address line 1"

@@ -26,6 +26,17 @@
   padding: 1rem;
 }
 
+.address-form-header {
+  width: calc(100% - 1rem);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.address-form-header h3 {
+  margin: 1rem 0;
+}
+
 .payment-form {
   display: flex;
   flex-direction: column;

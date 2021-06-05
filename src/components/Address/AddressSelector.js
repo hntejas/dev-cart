@@ -69,12 +69,7 @@ export default function AddressSelector({
         );
       })}
       {showAddressForm && (
-        <Modal
-          closeModal={() => {
-            setShowAddressForm(false);
-          }}
-          isOpen={showAddressForm}
-        >
+        <Modal closeModal={() => {}} isOpen={showAddressForm}>
           <AddressForm
             address={addressToEdit}
             closeModal={() => {

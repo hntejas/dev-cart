@@ -57,7 +57,7 @@ export default function Login() {
             isLoggedIn: true,
           },
         });
-        navigate(from || -1);
+        navigate(from || "/");
       } else {
         showToast(
           <p>Login failed! {response.error && response.error.message}</p>

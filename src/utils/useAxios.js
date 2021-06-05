@@ -42,7 +42,7 @@ const loaderMessage = {
     post: "Logging In...",
   },
   signup: {
-    post: "Singing Up..",
+    post: "Signing Up..",
   },
   address: {
     post: "Adding address...",

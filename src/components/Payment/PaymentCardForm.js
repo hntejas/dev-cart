@@ -53,7 +53,7 @@ export default function PaymentCardForm({ payment, setPayment }) {
           onChange={inputHandler}
           onBlur={validateField}
           className={payment.expiry.style}
-          style={{ width: "70%" }}
+          style={{ width: "70%", marginRight: "5px" }}
         />
         <input
           id="cvv"
