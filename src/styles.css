@@ -1,0 +1,13 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+
+.App {
+  font-family: "Roboto", sans-serif;
+  text-align: center;
+}
+body {
+  margin: 0;
+}
+.body-container {
+  margin-top: 3.2rem;
+  margin-bottom: 3rem;
+}

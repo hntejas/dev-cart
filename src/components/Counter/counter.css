@@ -1,0 +1,33 @@
+.counter {
+  margin: 0.5rem;
+  font-weight: bold;
+}
+
+.btn-counter {
+  background: none;
+  border: 1px solid gray;
+  border-radius: 0.2rem;
+  padding: 0.1rem 0.45rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.btn-counter:hover:not([disabled]) {
+  background: gray;
+  color: white;
+}
+
+.btn-counter:disabled {
+  background: lightgray;
+  cursor: not-allowed;
+}
+
+.btn-counter:focus {
+  outline: none;
+}
+
+.counter-text {
+  margin: 0 0.5rem;
+}
