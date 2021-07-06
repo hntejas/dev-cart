@@ -48,11 +48,6 @@ export default function SignUp() {
     },
   };
 
-  function useQuery() {
-    return new URLSearchParams(useLocation().search);
-  }
-  let query = useQuery();
-
   const navigate = useNavigate();
   const { userDispatch, userActionTypes } = useUser();
   const [userData, setUserData] = useState(initialUserData);
@@ -70,8 +65,6 @@ export default function SignUp() {
         password: userData.password.value,
       };
 
-      let from = "";
-      from = query.get("from");
       const response = await signup(user);
       if (response.success) {
         addTokenToStorage(response.token);
@@ -81,7 +74,7 @@ export default function SignUp() {
             isLoggedIn: true,
           },
         });
-        navigate(from || "/");
+        navigate("/");
       } else {
         showToast(
           <p>Signup Failed!! {response.error && response.error.message}</p>
@@ -98,7 +91,6 @@ export default function SignUp() {
       const stateCopy = JSON.parse(JSON.stringify(state));
       stateCopy[id].isValid = validateField(id, currentTarget.value);
       stateCopy[id].value = currentTarget.value;
-
       return stateCopy;
     });
   };
