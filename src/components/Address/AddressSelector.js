@@ -14,8 +14,6 @@ export default function AddressSelector({
   const [addressToEdit, setAddressToEdit] = useState();
   const { userDispatch, userActionTypes } = useUser();
 
-  console.log("render");
-
   const editAddress = (address) => {
     setAddressToEdit(address);
     setShowAddressForm(true);

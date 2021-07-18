@@ -32,6 +32,22 @@
   background: #f8d499;
 }
 
+.link-disabled {
+  pointer-events: none;
+  border: none;
+  background: #f8d499;
+}
+
+.empty-img {
+  max-width: 350px;
+}
+
+.empty-page-container {
+  padding: 1rem;
+  max-width: 90vw;
+  margin: auto;
+}
+
 @media (min-width: 1024px) {
   .cart-container {
     max-width: 85%;

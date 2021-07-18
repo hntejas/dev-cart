@@ -8,7 +8,7 @@ import {
 import { formatPrice, showToast } from "../../../utils/helper";
 import "./cart-product.css";
 
-export default function CartProduct({ cartLine }) {
+export default function CartProduct({ cartLine, readOnly = false }) {
   const { cartDispatch, cartActionTypes } = useCart();
   const { id, title, brand, imgUrl, price, basePrice } = cartLine.product;
   const discount =
@@ -19,13 +19,14 @@ export default function CartProduct({ cartLine }) {
   const updateQuantity = async (type) => {
     const newQuantity =
       type === "DECREMENT" ? cartLine.quantity - 1 : cartLine.quantity + 1;
-    const response = await updateItemQuantity(id, newQuantity);
+    const response = await updateItemQuantity(cartLine.id, newQuantity);
 
     if (response.success) {
       cartDispatch({
-        type: cartActionTypes.SYNC_CART,
+        type: cartActionTypes.UPDATE_QUANTITY,
         payload: {
-          cart: response.cart,
+          cartId: cartLine.id,
+          newQuantity: newQuantity,
         },
       });
       showToast(<p>Product quantity updated to {newQuantity}</p>);
@@ -35,12 +36,12 @@ export default function CartProduct({ cartLine }) {
   };
 
   const removeItem = async () => {
-    const response = await removeItemFromCart(id);
+    const response = await removeItemFromCart(cartLine.id);
     if (response.success) {
       cartDispatch({
-        type: cartActionTypes.SYNC_CART,
+        type: cartActionTypes.REMOVE_FROM_CART,
         payload: {
-          cart: response.cart,
+          cartId: cartLine.id,
         },
       });
       showToast(<p>Item removed</p>);
@@ -71,16 +72,21 @@ export default function CartProduct({ cartLine }) {
         </div>
       </div>
       <div className="cart-product-action-container">
-        <Counter
-          value={cartLine.quantity}
-          onIncrement={() => updateQuantity("INCREMENT")}
-          onDecrement={() => updateQuantity("DECREMENT")}
-        />
-        <Button
-          text="REMOVE"
-          onClick={removeItem}
-          styleClass="btn-cart-product-action"
-        />
+        {readOnly && <>Quantity : {cartLine.quantity}</>}
+        {!readOnly && (
+          <>
+            <Counter
+              value={cartLine.quantity}
+              onIncrement={() => updateQuantity("INCREMENT")}
+              onDecrement={() => updateQuantity("DECREMENT")}
+            />
+            <Button
+              text="REMOVE"
+              onClick={removeItem}
+              styleClass="btn-cart-product-action"
+            />
+          </>
+        )}
       </div>
     </div>
   );

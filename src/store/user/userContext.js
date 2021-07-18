@@ -18,7 +18,7 @@ const syncCart = async (cartDispatch, cartActionTypes) => {
     cartDispatch({
       type: cartActionTypes.SYNC_CART,
       payload: {
-        cart: response.cart,
+        cartLines: response.cartLines,
       },
     });
   }

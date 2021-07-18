@@ -17,6 +17,21 @@ export async function getUserCart() {
   }
 }
 
+export async function getPaymentOrder() {
+  try {
+    const authToken = getAuthToken();
+    return useAxios(
+      axios.get("https://dev-cart.hntejas.repl.co/order/paymentinit", {
+        headers: {
+          Authorization: authToken,
+        },
+      })
+    );
+  } catch (e) {
+    console.log(error);
+  }
+}
+
 export async function addItemToCart(itemId) {
   const authToken = getAuthToken();
   return useAxios(
@@ -32,12 +47,12 @@ export async function addItemToCart(itemId) {
   );
 }
 
-export async function updateItemQuantity(itemId, quantity) {
+export async function updateItemQuantity(cartId, quantity) {
   const authToken = getAuthToken();
   return await useAxios(
     axios.put(
       "https://dev-cart.hntejas.repl.co/cart",
-      { itemId, quantity },
+      { cartId, quantity },
       {
         headers: {
           Authorization: authToken,
@@ -47,10 +62,10 @@ export async function updateItemQuantity(itemId, quantity) {
   );
 }
 
-export async function removeItemFromCart(itemId) {
+export async function removeItemFromCart(cartId) {
   const authToken = getAuthToken();
   return useAxios(
-    axios.delete("https://dev-cart.hntejas.repl.co/cart/" + itemId, {
+    axios.delete("https://dev-cart.hntejas.repl.co/cart/" + cartId, {
       headers: {
         Authorization: authToken,
       },
