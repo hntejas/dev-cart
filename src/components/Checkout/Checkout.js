@@ -1,54 +1,23 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import { useCart } from "../../store/cart";
+
 import CartSummary from "../CartSummary/CartSummary";
 import AddressManager from "../Address/AddressManager";
-import PaymentCardForm from "../Payment/PaymentCardForm";
-import { useEffect, useState } from "react";
-import { useCart } from "../../store/cart";
-import { placeOrder } from "../../services/cart.service";
+import CartProductListing from "../Cart/CartProductListing/CartProductListing";
 import Modal from "../UI/Modal/Modal";
-import { useNavigate } from "react-router";
+import { displayRazorpay } from "./razorpay";
+import { placeOrder } from "../../services/cart.service";
+
 import "./checkout.css";
+import { showToast } from "../../utils/helper";
 
 export default function Checkout() {
-  const initialPaymentState = {
-    cardNumber: {
-      isValid: false,
-      value: "",
-      isTouched: false,
-      isRequired: true,
-      regex: /^\d{16}$/,
-      style: "",
-    },
-    cardName: {
-      isValid: true,
-      value: "",
-      isTouched: false,
-      isRequired: true,
-      regex: /^[a-zA-Z0-9_#,&@!%$ .-]*$/,
-      style: "",
-    },
-    expiry: {
-      isValid: false,
-      value: "",
-      isTouched: false,
-      isRequired: true,
-      regex: /^[a-zA-Z0-9_.-]*$/,
-      style: "",
-    },
-    cvv: {
-      isValid: false,
-      value: "",
-      isTouched: false,
-      isRequired: true,
-      regex: /^\d{3}$/,
-      style: "",
-    },
-  };
-
   const [selectedAddress, setSelectedAddress] = useState();
-  const [payment, setPayment] = useState(initialPaymentState);
-  const [isOrderEligible, setIsOrderEligible] = useState();
   const [showOrderConfirmation, setShowOrderConfirmation] = useState(false);
-  const { cartDispatch, cartActionTypes } = useCart();
+  const [isProcessing, setIsProcessing] = useState(false);
+  const { cart, cartDispatch, cartActionTypes } = useCart();
+
   const navigate = useNavigate();
 
   const selectAddressHandler = (address) => {
@@ -62,40 +31,26 @@ export default function Checkout() {
     });
   }, []);
 
-  useEffect(() => {
-    const isPaymentEligible = validatePaymentForm();
-    setIsOrderEligible(selectedAddress && isPaymentEligible);
-  }, [selectedAddress, payment]);
-
-  const submitOrder = async () => {
-    const isPaymentEligible = validatePaymentForm();
-    if (!selectedAddress || !isPaymentEligible) {
-      return;
-    } else {
-      const response = await placeOrder();
-      if (response.success) {
-        cartDispatch({
-          type: cartActionTypes.EMPTY_CART,
-        });
-        setShowOrderConfirmation(true);
-      }
+  const submitOrder = () => {
+    try {
+      if (!selectedAddress) return;
+      setIsProcessing(true);
+      displayRazorpay(paymentSuccessCallback);
+    } catch (e) {
+      showToast(<p>Ops, Something went wrong. Please try again later</p>);
+      setIsProcessing(false);
     }
   };
 
-  const validatePaymentForm = () => {
-    const paymentCopy = { ...payment };
-    let isFormValid = true;
-    for (let addressFeild in paymentCopy) {
-      const input = paymentCopy[addressFeild];
-      input.isValid = input.isRequired
-        ? !!input.value && input.regex.test(input.value)
-        : true;
-      if (!input.isValid) {
-        isFormValid = false;
-        input.style = "invalid-input";
-      }
+  const paymentSuccessCallback = async () => {
+    const response = await placeOrder();
+    if (response.success) {
+      cartDispatch({
+        type: cartActionTypes.EMPTY_CART,
+      });
+      setShowOrderConfirmation(true);
     }
-    return isFormValid;
+    setIsProcessing(false);
   };
 
   const navigateToHome = () => {
@@ -105,18 +60,22 @@ export default function Checkout() {
 
   return (
     <div className="cart-container">
-      <div className="cart-products">
+      <div className="cart-products" style={{ boxShadow: "none" }}>
         <AddressManager
           selectAddressHandler={selectAddressHandler}
           selectedAddress={selectedAddress}
         />
-        <PaymentCardForm payment={payment} setPayment={setPayment} />
+        <div style={{ width: "80%", margin: "auto" }}>
+          <CartProductListing cartLines={cart.cartLines} readOnly={true} />
+        </div>
         <button
           className="btn checkout-btn desktop-only"
-          disabled={!isOrderEligible}
+          disabled={
+            !selectedAddress || cart.cartLines.length === 0 || isProcessing
+          }
           onClick={submitOrder}
         >
-          Place Order
+          {isProcessing ? "Processing order" : "Proceed To Pay"}
         </button>
       </div>
 
@@ -124,10 +83,12 @@ export default function Checkout() {
         <CartSummary />
         <button
           className="btn checkout-btn"
-          disabled={!isOrderEligible}
+          disabled={
+            !selectedAddress || cart.cartLines.length === 0 || isProcessing
+          }
           onClick={submitOrder}
         >
-          Place Order
+          {isProcessing ? "Processing order" : "Proceed To Pay"}
         </button>
       </div>
 

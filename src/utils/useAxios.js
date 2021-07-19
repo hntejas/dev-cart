@@ -63,8 +63,8 @@ export const axiosInterceptor = () => {
   axios.interceptors.request.use(
     (config) => {
       const path = config.url.substring(config.url.lastIndexOf("/") + 1);
-      setLoaderText(loaderMessage[path] && loaderMessage[path][config.method]);
-      setLoading(true);
+      // setLoaderText(loaderMessage[path] && loaderMessage[path][config.method]);
+      // setLoading(true);
       return config;
     },
     (error) => {

@@ -1,28 +1,17 @@
 import * as cartActionTypes from "./cartActionType";
 
-const syncCart = (cartState, { cart }) => {
+const syncCart = (cartState, { cartLines }) => {
   const cartStateCopy = { ...cartState };
-  cartStateCopy.cartLines = cart.cartLines;
+  cartStateCopy.cartLines = cartLines;
   const updatedCart = updateCartTotalAndQuantity(cartStateCopy);
   return updatedCart;
 };
 
-const addToCart = (cartState, { product, quantity }) => {
+const addToCart = (cartState, { cartId, product, quantity }) => {
   const cartStateCopy = { ...cartState };
 
-  const productIndexInCart = cartState.cartLines.findIndex(
-    (cartLine) => cartLine.product.id === product.id
-  );
-
-  if (productIndexInCart !== -1) {
-    return updateQuantity(cartState, {
-      productId: product.id,
-      newQuantity:
-        cartState.cartLines[productIndexInCart].quantity + (quantity || 1),
-    });
-  }
-
   cartStateCopy.cartLines = cartState.cartLines.concat({
+    id: cartId,
     product: { ...product },
     quantity: quantity || 1,
     amount: product.price,
@@ -33,11 +22,11 @@ const addToCart = (cartState, { product, quantity }) => {
   return updatedCart;
 };
 
-const updateQuantity = (cartState, { productId, newQuantity }) => {
+const updateQuantity = (cartState, { cartId, newQuantity }) => {
   const cartStateCopy = { ...cartState };
 
   cartStateCopy.cartLines = cartState.cartLines.map((cartLine) => {
-    if (cartLine.product.id === productId) {
+    if (cartLine.id === cartId) {
       return {
         ...cartLine,
         quantity: newQuantity,
@@ -52,11 +41,11 @@ const updateQuantity = (cartState, { productId, newQuantity }) => {
   return updatedCart;
 };
 
-const removeFromCart = (cartState, { productId }) => {
+const removeFromCart = (cartState, { cartId }) => {
   const cartStateCopy = { ...cartState };
 
   cartStateCopy.cartLines = cartState.cartLines.filter((cartLine) => {
-    return cartLine.product.id !== productId;
+    return cartLine.id !== cartId;
   });
 
   const updatedCart = updateCartTotalAndQuantity(cartStateCopy);

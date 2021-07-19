@@ -55,9 +55,11 @@ export default function ProductCard({ product }) {
         const response = await addItemToCart(product.id);
         if (response.success) {
           cartDispatch({
-            type: cartActionTypes.SYNC_CART,
+            type: cartActionTypes.ADD_TO_CART,
             payload: {
-              cart: response.cart,
+              cartId: response.cartId,
+              product: product,
+              quantity: 1,
             },
           });
           showToast(<p>Item added to cart!</p>);
@@ -72,7 +74,7 @@ export default function ProductCard({ product }) {
     if (!user.isLoggedIn) {
       showToast(
         <p>
-          Pease{" "}
+          Please{" "}
           <Link to="/login" style={{ color: "blue" }}>
             LOGIN
           </Link>{" "}
