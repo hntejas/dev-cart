@@ -18,6 +18,7 @@ First ever ecommerce store for the developer community.
 - Cart with review and item management
 - Checkout with Address Management and Payment forms for quick order placement
 - User authentication
+- Razorpay Payment Integration at checkout.
 
 ### Tech Stack
 
@@ -54,5 +55,4 @@ I have utilized libraries like React Router v6, axios, react toastify in this pr
 ### Upcoming Features
 
 - Dedicated Product Page
-- Mock Payment Integration
 - Flexible or generic filtering module
