@@ -35,7 +35,7 @@ export default function Checkout() {
     try {
       if (!selectedAddress) return;
       setIsProcessing(true);
-      displayRazorpay(paymentSuccessCallback);
+      displayRazorpay(paymentSuccessCallback, paymentDismissCallback);
     } catch (e) {
       showToast(<p>Ops, Something went wrong. Please try again later</p>);
       setIsProcessing(false);
@@ -50,6 +50,10 @@ export default function Checkout() {
       });
       setShowOrderConfirmation(true);
     }
+    setIsProcessing(false);
+  };
+
+  const paymentDismissCallback = () => {
     setIsProcessing(false);
   };
 

@@ -14,7 +14,10 @@ function loadScript(src) {
   });
 }
 
-export async function displayRazorpay(paymentSuccessCallback) {
+export async function displayRazorpay(
+  paymentSuccessCallback,
+  paymentDismissCallback
+) {
   const res = await loadScript("https://checkout.razorpay.com/v1/checkout.js");
 
   if (!res) {
@@ -48,6 +51,11 @@ export async function displayRazorpay(paymentSuccessCallback) {
         razorpaySignature: response.razorpay_signature,
       };
       paymentSuccessCallback();
+    },
+    modal: {
+      ondismiss: function () {
+        paymentDismissCallback();
+      },
     },
   };
 
