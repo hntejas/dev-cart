@@ -7,12 +7,15 @@ import { HiShoppingCart } from "react-icons/hi";
 import { useUser } from "../../store/user";
 import { useCart } from "../../store/cart";
 import "./header.css";
+import { useWishlist } from "../../store/wishlist";
 
 export default function Header() {
   const [showNav, setShowNav] = useState(false);
   const { user, userDispatch, userActionTypes } = useUser();
   const { cart } = useCart();
+  const { wishlist } = useWishlist();
   const navigate = useNavigate();
+  console.log(wishlist);
 
   const logout = () => {
     userDispatch({
@@ -47,7 +50,12 @@ export default function Header() {
           </div>
         </Link>
         <Link to="/wishlist" className="header-nav-link">
-          <div>Wishlist</div>
+          <div className="icon">
+            Wishlist
+            {wishlist.length > 0 && user.isLoggedIn && (
+              <span className="icon-badge">{wishlist.length}</span>
+            )}
+          </div>
         </Link>
         {!user.isLoggedIn ? (
           <Link to="/login" className="header-nav-link">

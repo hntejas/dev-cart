@@ -54,17 +54,30 @@ const loaderMessage = {
   },
 };
 
+const loaderPaths = [
+  "products",
+  "brands",
+  "categories",
+  "login",
+  "signup",
+  "order",
+];
+
 export const axiosInterceptor = () => {
   const [loading, setLoading] = useState(false);
   const [loaderText, setLoaderText] = useState("Loading...");
   const { userDispatch, userActionTypes } = useUser();
-  const navigator = useNavigate();
 
   axios.interceptors.request.use(
     (config) => {
       const path = config.url.substring(config.url.lastIndexOf("/") + 1);
-      // setLoaderText(loaderMessage[path] && loaderMessage[path][config.method]);
-      // setLoading(true);
+      if (loaderPaths.includes(path)) {
+        setLoaderText(
+          loaderMessage[path] && loaderMessage[path][config.method]
+        );
+        setLoading(true);
+      }
+
       return config;
     },
     (error) => {

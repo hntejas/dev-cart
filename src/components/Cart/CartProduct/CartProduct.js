@@ -7,8 +7,10 @@ import {
 } from "../../../services/cart.service";
 import { formatPrice, showToast } from "../../../utils/helper";
 import "./cart-product.css";
+import { useState } from "react";
 
 export default function CartProduct({ cartLine, readOnly = false }) {
+  const [isLoading, setIsLoading] = useState(false);
   const { cartDispatch, cartActionTypes } = useCart();
   const { id, title, brand, imgUrl, price, basePrice } = cartLine.product;
   const discount =
@@ -36,15 +38,22 @@ export default function CartProduct({ cartLine, readOnly = false }) {
   };
 
   const removeItem = async () => {
-    const response = await removeItemFromCart(cartLine.id);
-    if (response.success) {
-      cartDispatch({
-        type: cartActionTypes.REMOVE_FROM_CART,
-        payload: {
-          cartId: cartLine.id,
-        },
-      });
-      showToast(<p>Item removed</p>);
+    try {
+      setIsLoading(true);
+      const response = await removeItemFromCart(cartLine.id);
+      if (response.success) {
+        setIsLoading(false);
+        cartDispatch({
+          type: cartActionTypes.REMOVE_FROM_CART,
+          payload: {
+            cartId: cartLine.id,
+          },
+        });
+        showToast(<p>Item removed</p>);
+      }
+    } catch (e) {
+      console.error(e);
+      setIsLoading(false);
     }
   };
 
@@ -81,9 +90,10 @@ export default function CartProduct({ cartLine, readOnly = false }) {
               onDecrement={() => updateQuantity("DECREMENT")}
             />
             <Button
-              text="REMOVE"
+              text={isLoading ? "REMOVING..." : "REMOVE"}
               onClick={removeItem}
               styleClass="btn-cart-product-action"
+              disabled={!!isLoading}
             />
           </>
         )}

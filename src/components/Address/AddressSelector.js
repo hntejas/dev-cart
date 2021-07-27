@@ -12,6 +12,7 @@ export default function AddressSelector({
 }) {
   const [showAddressForm, setShowAddressForm] = useState(false);
   const [addressToEdit, setAddressToEdit] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const { userDispatch, userActionTypes } = useUser();
 
   const editAddress = (address) => {
@@ -20,14 +21,21 @@ export default function AddressSelector({
   };
 
   const deleteAddress = async (addressId) => {
-    const response = await removeAddress(addressId);
-    if (response.success) {
-      userDispatch({
-        type: userActionTypes.REMOVE_ADDRESS,
-        payload: {
-          addressId: addressId,
-        },
-      });
+    try {
+      setIsLoading(true);
+      const response = await removeAddress(addressId);
+      if (response.success) {
+        setIsLoading(false);
+        userDispatch({
+          type: userActionTypes.REMOVE_ADDRESS,
+          payload: {
+            addressId: addressId,
+          },
+        });
+      }
+    } catch (e) {
+      console.error(e);
+      setIsLoading(false);
     }
   };
 
@@ -53,14 +61,16 @@ export default function AddressSelector({
               <button
                 className="btn-cart-product-action"
                 onClick={() => editAddress(address)}
+                disabled={isLoading}
               >
                 Edit
               </button>
               <div
                 className="btn-cart-product-action"
                 onClick={() => deleteAddress(address._id)}
+                disabled={isLoading}
               >
-                Remove
+                {isLoading ? "Removing" : "Remove"}
               </div>
             </div>
           </div>

@@ -39,6 +39,10 @@
   font-weight: bold;
 }
 
+.btn-cart-product-action:disabled {
+  color: gray;
+}
+
 .btn-cart-product-action:hover {
   color: orange;
 }

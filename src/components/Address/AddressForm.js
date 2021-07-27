@@ -61,6 +61,7 @@ export default function AddressForm({ address: currentAddress, closeModal }) {
 
   const { userDispatch, userActionTypes } = useUser();
   const [address, setAddress] = useState(initialAddressState);
+  const [isLoading, setIsLoading] = useState(false);
 
   const inputHandler = (e) => {
     const fieldId = e.target.id;
@@ -90,19 +91,26 @@ export default function AddressForm({ address: currentAddress, closeModal }) {
     const isFormValid = validateForm();
     if (!isFormValid) return;
     const addressObj = getAddressObj();
-    const response = !currentAddress
-      ? await addAddress(addressObj)
-      : await editAddress({ ...addressObj, _id: currentAddress._id });
-    if (response.success) {
-      userDispatch({
-        type: !currentAddress
-          ? userActionTypes.ADD_ADDRESS
-          : userActionTypes.EDIT_ADDRESS,
-        payload: {
-          address: { ...addressObj, _id: response.addressId },
-        },
-      });
-      closeModal && closeModal();
+    try {
+      setIsLoading(true);
+      const response = !currentAddress
+        ? await addAddress(addressObj)
+        : await editAddress({ ...addressObj, _id: currentAddress._id });
+      if (response.success) {
+        userDispatch({
+          type: !currentAddress
+            ? userActionTypes.ADD_ADDRESS
+            : userActionTypes.EDIT_ADDRESS,
+          payload: {
+            address: { ...addressObj, _id: response.addressId },
+          },
+        });
+        closeModal && closeModal();
+      }
+      setIsLoading(false);
+    } catch (e) {
+      setIsLoading(false);
+      console.error(e);
     }
   };
 
@@ -197,8 +205,12 @@ export default function AddressForm({ address: currentAddress, closeModal }) {
         onBlur={validateField}
         className={address.phone.style}
       />
-      <button className="btn btn-primary" onClick={submitAddress}>
-        {currentAddress ? "Save" : "Add"}
+      <button
+        className="btn btn-primary"
+        onClick={submitAddress}
+        disabled={isLoading}
+      >
+        {isLoading ? "Saving" : currentAddress ? "Save" : "Add"}
       </button>
     </div>
   );

@@ -3,7 +3,6 @@
   padding: 0.6rem;
   display: flex;
   flex-direction: column;
-  cursor: pointer;
   background: white;
   margin: 1rem 0.5rem;
 }
@@ -104,7 +103,6 @@
     min-width: unset;
     width: calc(50% - 10px);
     margin: 0.1rem 0;
-    border-right: 1px solid lightgrey;
     padding: 0.2rem;
   }
 

@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useState } from "react";
 
 import { Link } from "react-router-dom";
 import { FaHeart } from "react-icons/fa";
@@ -28,6 +28,7 @@ export default function ProductCard({ product }) {
 
   const { cart, cartDispatch, cartActionTypes } = useCart();
   const { wishlist, wishlistDispatch, wishlistActionTypes } = useWishlist();
+  const [isLoading, setIsLoading] = useState(false);
   const { user } = useUser();
 
   const isProductInCart =
@@ -52,19 +53,26 @@ export default function ProductCard({ product }) {
       return;
     } else {
       (async () => {
-        const response = await addItemToCart(product.id);
-        if (response.success) {
-          cartDispatch({
-            type: cartActionTypes.ADD_TO_CART,
-            payload: {
-              cartId: response.cartId,
-              product: product,
-              quantity: 1,
-            },
-          });
-          showToast(<p>Item added to cart!</p>);
-        } else {
+        try {
+          setIsLoading(true);
+          const response = await addItemToCart(product.id);
+          if (response.success) {
+            cartDispatch({
+              type: cartActionTypes.ADD_TO_CART,
+              payload: {
+                cartId: response.cartId,
+                product: product,
+                quantity: 1,
+              },
+            });
+            showToast(<p>Item added to cart!</p>);
+          } else {
+            showToast(<p>Ops! Something went wrong</p>);
+          }
+          setIsLoading(false);
+        } catch (e) {
           showToast(<p>Ops! Something went wrong</p>);
+          setIsLoading(false);
         }
       })();
     }
@@ -104,12 +112,15 @@ export default function ProductCard({ product }) {
     }
   };
 
-  const buttonText = !!isProductInCart
+  let buttonText = !!isProductInCart
     ? "In Cart"
     : availability === "IN_STOCK"
     ? "Add to cart"
     : "Out of Stock";
 
+  if (isLoading) {
+    buttonText = "Adding..";
+  }
   return (
     <div className="card-container">
       <div className="card-img-container">
@@ -143,7 +154,7 @@ export default function ProductCard({ product }) {
       </div>
       <Button
         text={buttonText}
-        disabled={availability !== "IN_STOCK" || !!isProductInCart}
+        disabled={availability !== "IN_STOCK" || !!isProductInCart || isLoading}
         onClick={() => addToCart(product)}
       />
     </div>

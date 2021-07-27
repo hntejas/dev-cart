@@ -127,7 +127,7 @@ export default function ProductListingFilter() {
               <li key={index}>
                 <label>
                   <input
-                    type="checkbox"
+                    type="radio"
                     value={stars}
                     checked={productFilters.minimumRating === index + 1}
                     onChange={() => updateMinimumRatingFilter(index + 1)}
