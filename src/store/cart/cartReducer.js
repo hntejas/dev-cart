@@ -68,14 +68,15 @@ const updateCartTotalAndQuantity = (cartStateCopy) => {
         return {
           ...acc,
           totalCartQuantity: acc.totalCartQuantity + cartLine.quantity,
-          totalCartAmount: acc.totalCartAmount + cartLine.product.price,
+          totalCartAmount:
+            acc.totalCartAmount + cartLine.product.price * cartLine.quantity,
           totalCartBasePrice:
-            acc.totalCartBasePrice + cartLine.product.basePrice,
+            acc.totalCartBasePrice +
+            cartLine.product.basePrice * cartLine.quantity,
         };
       },
       { totalCartQuantity: 0, totalCartAmount: 0, totalCartBasePrice: 0 }
     );
-
   return {
     ...cartStateCopy,
     cartQuantity: totalCartQuantity,

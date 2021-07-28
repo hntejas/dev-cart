@@ -15,7 +15,6 @@ export default function Header() {
   const { cart } = useCart();
   const { wishlist } = useWishlist();
   const navigate = useNavigate();
-  console.log(wishlist);
 
   const logout = () => {
     userDispatch({
@@ -38,6 +37,7 @@ export default function Header() {
           showNav && setShowNav(false);
         }}
       >
+        {user.isLoggedIn && <h3 className="mobile-only">Hey {user.name}</h3>}
         <Link to="/shop" className="header-nav-link">
           Shop
         </Link>
@@ -62,9 +62,19 @@ export default function Header() {
             Login
           </Link>
         ) : (
-          <div className="header-nav-link" onClick={logout}>
-            Logout
-          </div>
+          <>
+            <div className="header-nav-link hover-menu-container desktop-only">
+              Hey {user.name}
+              <div className="hover-menu">
+                <div onClick={logout} className="hover-menu-item">
+                  Logout
+                </div>
+              </div>
+            </div>
+            <div div className="header-nav-link mobile-only" onClick={logout}>
+              Logout
+            </div>
+          </>
         )}
       </div>
       <div

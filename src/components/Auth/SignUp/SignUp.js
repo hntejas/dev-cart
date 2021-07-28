@@ -67,11 +67,12 @@ export default function SignUp() {
 
       const response = await signup(user);
       if (response.success) {
-        addTokenToStorage(response.token);
+        addAuthToStorage(response.token, user.name);
         userDispatch({
           type: userActionTypes.UPDATE_USER_LOGIN,
           payload: {
             isLoggedIn: true,
+            name: user.name,
           },
         });
         navigate("/");
@@ -109,10 +110,10 @@ export default function SignUp() {
     return isFormValid;
   };
 
-  const addTokenToStorage = (token) => {
+  const addAuthToStorage = (token, name) => {
     localStorage.setItem(
       "devCartAuth",
-      JSON.stringify({ isLoggedIn: true, token: token })
+      JSON.stringify({ isLoggedIn: true, token, name })
     );
   };
 

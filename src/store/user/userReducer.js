@@ -1,10 +1,10 @@
 import * as userActionTypes from "./userActionType";
 
-const updateUserLogin = (state, { isLoggedIn }) => {
+const updateUserLogin = (state, { isLoggedIn, name }) => {
   if (!isLoggedIn) {
     localStorage.removeItem("devCartAuth");
   }
-  return { ...state, isLoggedIn: isLoggedIn };
+  return { ...state, isLoggedIn: isLoggedIn, name: name };
 };
 
 const syncAddresses = (state, { addresses }) => {

@@ -67,7 +67,49 @@
   height: 1.1rem;
 }
 
+.hover-menu-container {
+  position: relative;
+  cursor: default;
+}
+
+.hover-menu {
+  display: none;
+  position: absolute;
+  top: 2.8rem;
+  background: var(--white);
+  padding-top: 0.2rem;
+  margin-left: -1.3rem;
+  min-width: 100%;
+}
+
+.hover-menu-container:hover > .hover-menu {
+  display: block;
+}
+
+.hover-menu-item {
+  background: #a0b4b7;
+  padding: 1rem;
+}
+
+.hover-menu-item:hover {
+  cursor: pointer;
+}
+
+.desktop-only {
+  display: flex;
+}
+
+.mobile-only {
+  display: none;
+}
+
 @media (max-width: 768px) {
+  .desktop-only {
+    display: none;
+  }
+  .mobile-only {
+    display: flex;
+  }
   .mobile-ham {
     display: block;
   }

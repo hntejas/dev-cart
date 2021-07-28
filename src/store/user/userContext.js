@@ -8,7 +8,7 @@ import { useWishlist } from "../wishlist";
 import { getUserWishlist } from "../../services/wishlist.service";
 import { getAddresses } from "../../services/address.service";
 
-import { isLoggedInLocally } from "../../utils/helper";
+import { isLoggedInLocally, getLocalLoginName } from "../../utils/helper";
 
 export const UserContext = createContext();
 
@@ -62,7 +62,7 @@ const syncAddresses = async (userDispatch, userActionTypes) => {
 
 export function UserContextProvider({ children }) {
   const initialUserState = {
-    name: "",
+    name: getLocalLoginName(),
     email: "",
     isLoggedIn: isLoggedInLocally(),
     shippingAddresses: [],

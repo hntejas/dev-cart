@@ -15,7 +15,13 @@ export function showToast(text) {
 
 export const isLoggedInLocally = () =>
   localStorage.getItem("devCartAuth") &&
-  JSON.parse(localStorage.getItem("devCartAuth"))["isLoggedIn"];
+  !!JSON.parse(localStorage.getItem("devCartAuth"))["isLoggedIn"];
+
+export const getLocalLoginName = () =>
+  localStorage.getItem("devCartAuth") &&
+  !!JSON.parse(localStorage.getItem("devCartAuth"))["isLoggedIn"]
+    ? JSON.parse(localStorage.getItem("devCartAuth"))["name"]
+    : "";
 
 export const getAuthToken = () =>
   localStorage.getItem("devCartAuth") &&

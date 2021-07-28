@@ -50,11 +50,12 @@ export default function Login() {
         password: userData.password.value,
       });
       if (response.success) {
-        addTokenToStorage(response.token);
+        addAuthToStorage(response.token, response.name);
         userDispatch({
           type: userActionTypes.UPDATE_USER_LOGIN,
           payload: {
             isLoggedIn: true,
+            name: response.name,
           },
         });
         navigate(from || "/");
@@ -66,10 +67,10 @@ export default function Login() {
     }
   };
 
-  const addTokenToStorage = (token) => {
+  const addAuthToStorage = (token, name) => {
     localStorage.setItem(
       "devCartAuth",
-      JSON.stringify({ isLoggedIn: true, token: token })
+      JSON.stringify({ isLoggedIn: true, token, name })
     );
   };
 

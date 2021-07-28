@@ -10,7 +10,8 @@ import "./cart-product.css";
 import { useState } from "react";
 
 export default function CartProduct({ cartLine, readOnly = false }) {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isRemoving, setIsRemoving] = useState(false);
+  const [isLoading, setLoading] = useState(false);
   const { cartDispatch, cartActionTypes } = useCart();
   const { id, title, brand, imgUrl, price, basePrice } = cartLine.product;
   const discount =
@@ -21,28 +22,34 @@ export default function CartProduct({ cartLine, readOnly = false }) {
   const updateQuantity = async (type) => {
     const newQuantity =
       type === "DECREMENT" ? cartLine.quantity - 1 : cartLine.quantity + 1;
-    const response = await updateItemQuantity(cartLine.id, newQuantity);
-
-    if (response.success) {
-      cartDispatch({
-        type: cartActionTypes.UPDATE_QUANTITY,
-        payload: {
-          cartId: cartLine.id,
-          newQuantity: newQuantity,
-        },
-      });
-      showToast(<p>Product quantity updated to {newQuantity}</p>);
-    } else {
-      showToast(<p>Ops! Could not update, please try again later</p>);
+    try {
+      setLoading(true);
+      const response = await updateItemQuantity(cartLine.id, newQuantity);
+      if (response.success) {
+        cartDispatch({
+          type: cartActionTypes.UPDATE_QUANTITY,
+          payload: {
+            cartId: cartLine.id,
+            newQuantity: newQuantity,
+          },
+        });
+        showToast(<p>Product quantity updated to {newQuantity}</p>);
+      } else {
+        showToast(<p>Ops! Could not update, please try again later</p>);
+      }
+      setLoading(false);
+    } catch (e) {
+      setLoading(false);
+      console.error(e);
     }
   };
 
   const removeItem = async () => {
     try {
-      setIsLoading(true);
+      setIsRemoving(true);
       const response = await removeItemFromCart(cartLine.id);
       if (response.success) {
-        setIsLoading(false);
+        setIsRemoving(false);
         cartDispatch({
           type: cartActionTypes.REMOVE_FROM_CART,
           payload: {
@@ -53,7 +60,7 @@ export default function CartProduct({ cartLine, readOnly = false }) {
       }
     } catch (e) {
       console.error(e);
-      setIsLoading(false);
+      setIsRemoving(false);
     }
   };
 
@@ -88,12 +95,13 @@ export default function CartProduct({ cartLine, readOnly = false }) {
               value={cartLine.quantity}
               onIncrement={() => updateQuantity("INCREMENT")}
               onDecrement={() => updateQuantity("DECREMENT")}
+              disabled={isLoading}
             />
             <Button
-              text={isLoading ? "REMOVING..." : "REMOVE"}
+              text={isRemoving ? "REMOVING..." : "REMOVE"}
               onClick={removeItem}
               styleClass="btn-cart-product-action"
-              disabled={!!isLoading}
+              disabled={!!isRemoving}
             />
           </>
         )}
